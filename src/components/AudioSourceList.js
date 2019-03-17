@@ -54,7 +54,7 @@ class AudioSourceList extends Component{
         return (
             <div>
                 <div>Audio input source</div>
-                <select value={state.selectedSource.deviceId} onChange={this._handleChange} >
+                <select value={state.selectedSource.deviceId} onChange={this._handleChange} className="settings-select" >
                     {
                         state.audioSources.map(item => <option key={item.deviceId} value={item.deviceId} >{item.label}</option>)
                     }

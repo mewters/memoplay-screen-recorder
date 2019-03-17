@@ -16,10 +16,11 @@ const startUrl = process.env.ELECTRON_START_URL || url.format({
 
 function createWindow () {
   mainWindow = new BrowserWindow({
-    width: 450,
-    height: 170,
-    minWidth: 450,
-    minHeight: 170,
+    width: 480,
+    height: 200,
+    minWidth: 480,
+    minHeight: 200,
+    resizable: false,
     webPreferences: {
       nodeIntegration: true
     }

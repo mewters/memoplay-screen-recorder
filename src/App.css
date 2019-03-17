@@ -71,6 +71,10 @@ canvas{
   flex-flow: column;
   justify-content: space-between;
 }
+
+.settings-select{
+  max-width: 275px;
+}
 /* Recording Control
 *******************/
 .recording-control{

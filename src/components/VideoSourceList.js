@@ -63,12 +63,12 @@ class VideoSourceList extends Component{
         return (
             <div>
                 <div>Video input  source</div>
-                <select value={state.selectedSource.id} onChange={(this._handleChange)} >
-                    <option>-- Screens</option>
+                <select value={state.selectedSource.id} onChange={(this._handleChange)} className="settings-select" >
+                    <option>-- SCREENS --</option>
                     {
                         state.screenSources.map(item => <option key={item.id} value={item.id} >{item.name}</option>)
                     }
-                    <option>-- windows</option>
+                    <option>-- WINDOWS --</option>
                     {
                         state.windowSources.map(item => <option key={item.id} value={item.id} >{item.name}</option>)
                     }
