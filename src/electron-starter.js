@@ -1,4 +1,4 @@
-const {app, BrowserWindow, globalShortcut} = require('electron');
+const {app, BrowserWindow, globalShortcut, ipcMain} = require('electron');
 const path = require('path');
 const url = require('url');
 
@@ -71,3 +71,19 @@ function setShortcuts(){
 function unsetShortcuts(){
   globalShortcut.unregisterAll();
 }
+
+ipcMain.on('win:convert-video', (event, args) => {
+  const hbjs = require('handbrake-js'),
+    {folder, fileName, type} = args,
+    input = `${folder}/${fileName}`,
+    output =  `${folder}/${fileName.replace(/\.webm$/i, '.')}${type}`;
+
+  hbjs.spawn({ input , output })
+    .on('error', err => {
+      console.log('error on converting');
+    })
+    .on('end', err => {
+      require('fs').unlink(input, () => {});
+      event.sender.send('back:convert-video:complete');
+    })
+})

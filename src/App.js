@@ -23,7 +23,8 @@ class App extends Component {
     canRecordSystemAudio: false,
     videoTarget: null,
     audioTarget: null,
-    systemAudioTarget: null
+    systemAudioTarget: null,
+    isLoading: false
   }
 
   constructor(props) {
@@ -37,6 +38,10 @@ class App extends Component {
 
   componentDidMount(){
     this.handleShortcuts();
+
+    ipcRenderer.on('back:convert-video:complete', () => {
+      this.setState({isLoading: false});
+    })
   }
 
   handleShortcuts(){
@@ -153,9 +158,14 @@ class App extends Component {
     const savefilepath = this.savefilepath.current;
     const folder = `${savefilepath.state.folder || '.'}/`,
       hasTime = savefilepath.state.hasTime,
+      format = savefilepath.state.format,
       fileName = `${savefilepath.state.filename || Date.now().toString()}${!hasTime ? '' : (Date.now().toString())}.webm`;
 
     await FileService.save(buffer, folder, fileName);
+    if(format !== 'webm'){
+      this.setState({isLoading: true});
+      ipcRenderer.send('win:convert-video', {folder, fileName, type: format});
+    }
     console.log('save')
   }
 
@@ -212,7 +222,7 @@ class App extends Component {
 
 
   render() {
-    const { isRecording, canRecordSystemAudio, audioTarget } = this.state;
+    const { isRecording, canRecordSystemAudio, audioTarget, isLoading } = this.state;
     let appClassName = 'App';
     if(isRecording){
       appClassName += ' is-recording';
@@ -251,6 +261,10 @@ class App extends Component {
               <SaveFilepath ref={this.savefilepath} />
           </div>
 
+        </div>
+
+        <div className={'loading-container' + (isLoading ? ' is-loading' : '')}>
+          <span>Wait . . .</span>
         </div>
       </div>
     );

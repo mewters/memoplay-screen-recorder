@@ -14,3 +14,9 @@ Simple Screen Recorder made with Electron.
 | Start Recording | F9  | Cmd+Shift+2 |
 | Pause/Resume Recording | F9  | Cmd+Shift+2 |
 | Stop Recording | F10  | Cmd+Option+2 |
+
+## Supported File Formats
+
+- .webm (default)
+- .mp4
+- .avi

@@ -124,7 +124,7 @@ canvas{
 
 .save-file-path{
   display: grid;
-  grid-template-columns: 1fr 100px 60px;
+  grid-template-columns: 1fr 100px 110px 60px;
   grid-gap: 10px;
 }
 
@@ -138,4 +138,25 @@ canvas{
   align-items: center;
   box-sizing: border-box;
   font-size: 25px;
+}
+
+
+/* Loading
+*******************/
+.loading-container{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+  pointer-events: none;
+}
+.loading-container:not(.is-loading){
+  display: none;
 }
