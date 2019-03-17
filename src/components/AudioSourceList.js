@@ -22,14 +22,31 @@ class AudioSourceList extends Component{
             audioSources = sources.filter(item => item.kind === 'audioinput');
         this.setState({
             audioSources
+        }, () => {
+            this._loadFromStorage();
         });
         return audioSources;
     }
 
     _handleChange = (event) => {
         const selectedSource = this.state.audioSources.find(item => item.deviceId === event.target.value);
+        this.selectSource(selectedSource);
+    }
+
+    _loadFromStorage(){
+        const sourceId = localStorage.getItem('_audio_source'),
+            selectedSource = this.state.audioSources.find(item => item.deviceId === sourceId);
+        if(selectedSource){
+            this.selectSource(selectedSource);
+        }else{
+            this.selectSource(this.state.audioSources[0]);
+        }
+    }
+
+    selectSource = (selectedSource) => {
         if(selectedSource){
             this.setState({selectedSource});
+            localStorage.setItem('_audio_source', selectedSource.deviceId);
             this.props.onSelect(selectedSource);
         }
     }
@@ -39,8 +56,7 @@ class AudioSourceList extends Component{
         return (
             <div>
                 <div>Audio input source</div>
-                <select value={state.selectedSource.deviceId} onChange={this._handleChange} >
-                    <option></option>
+                <select disabled value={state.selectedSource.deviceId} onChange={this._handleChange} >
                     {
                         state.audioSources.map(item => <option key={item.deviceId} value={item.deviceId} >{item.label}</option>)
                     }

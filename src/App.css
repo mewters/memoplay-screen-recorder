@@ -64,12 +64,12 @@ canvas{
   grid-area: settings-control;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
 }
 .settings-sources{
   display: flex;
   flex-flow: column;
-
+  justify-content: space-between;
 }
 /* Recording Control
 *******************/

@@ -78,6 +78,15 @@ class App extends Component {
   }
 
   start = async () => {
+    const savefilepath = this.savefilepath.current;
+    if(!savefilepath.state.folder){
+      remote.dialog.showMessageBox({
+        message: 'Select a folder to save the file'
+      });
+      this.savefilepath.current.selectFolder();
+      return false;
+    }
+
     const {videoTarget, isRecording, canRecordSystemAudio, systemAudioTarget} = this.state,
       stream = this.video.current.srcObject;
     if(videoTarget && !isRecording){
@@ -128,7 +137,8 @@ class App extends Component {
       hasTime = savefilepath.state.hasTime,
       fileName = `${savefilepath.state.filename || Date.now().toString()}${!hasTime ? '' : (Date.now().toString())}.webm`;
 
-    FileService.save(buffer, folder, fileName);
+    await FileService.save(buffer, folder, fileName);
+    console.log('save')
   }
 
   deleteRecording = async () => {
@@ -164,17 +174,21 @@ class App extends Component {
     const { isRecording, isPaused } = this.state;
 
     if(isRecording && !isPaused){
-      return ([
-        <button className="record-control-button" onClick={this.cancelRecording} ><i className="fas fa-trash-alt" /><span>Delete</span></button>,
-        <button className="record-control-button" onClick={this.pause} ><i className="fas fa-pause" /><span>Pause</span></button>,
-        <button className="record-control-button" onClick={this.stop} ><i className="fas fa-stop" /><span>Stop</span></button>
-      ])
+      return (
+        <>
+          <button className="record-control-button" onClick={this.cancelRecording} ><i className="fas fa-trash-alt" /><span>Delete</span></button>
+          <button className="record-control-button" onClick={this.pause} ><i className="fas fa-pause" /><span>Pause</span></button>
+          <button className="record-control-button" onClick={this.stop} ><i className="fas fa-stop" /><span>Stop</span></button>
+        </>
+      )
     }else{
-      return ([
-        <button className="record-control-button" onClick={this.cancelRecording} ><i className="fas fa-trash-alt" /><span>Delete</span></button>,
-        <button className="record-control-button" onClick={this.resume} ><i className="fas fa-play" /><span>Resume</span></button>,
-        <button className="record-control-button" onClick={this.stop} ><i className="fas fa-stop" /><span>Stop</span></button>
-      ])
+      return (
+        <>
+          <button className="record-control-button" onClick={this.cancelRecording} ><i className="fas fa-trash-alt" /><span>Delete</span></button>
+          <button className="record-control-button" onClick={this.resume} ><i className="fas fa-play" /><span>Resume</span></button>
+          <button className="record-control-button" onClick={this.stop} ><i className="fas fa-stop" /><span>Stop</span></button>
+        </>
+      )
     }
   }
 
@@ -198,7 +212,7 @@ class App extends Component {
               <VideoSourceList onSelect={this.onVideoSourceSelect} />
               <AudioSourceList onSelect={this.onAudioSourceSelect} />
               <label>
-                <input type="checkbox" checked={canRecordSystemAudio} onChange={this.onRecordSystemAudioChange} /> Record System Audio
+                <input disabled type="checkbox" checked={canRecordSystemAudio} onChange={this.onRecordSystemAudioChange} /> Record System Audio
               </label>
             </div>
             <div className="record-control" > 

@@ -10,6 +10,7 @@ export const FileService = {
                     reject(err);
                 }else{
                     resolve(filename);
+                    console.log(filename)
                 }
             })
         })
