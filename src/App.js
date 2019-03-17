@@ -101,6 +101,9 @@ class App extends Component {
 
   start = async () => {
     const savefilepath = this.savefilepath.current;
+    if(this.state.isLoading){
+      return false;
+    }
     if(!savefilepath.state.folder){
       remote.dialog.showMessageBox({
         message: 'Select a folder to save the file'
