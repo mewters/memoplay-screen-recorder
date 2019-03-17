@@ -1,0 +1,137 @@
+html{
+  font-family: 'Roboto', sans-serif;
+  background-color: #181c21;
+  color: #aaacb4;
+  padding: 15px;
+  min-width: 450px;
+  min-height: 170px;
+}
+button{
+  cursor: pointer;
+}
+button:hover{
+  opacity: 0.8;
+}
+
+canvas{
+  background-color: rgba(0, 0, 0, .2);
+  max-width: 100%;
+}
+
+/* App
+*******************/
+.app-container{
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  grid-gap: 10px;
+}
+
+.App.is-recording .app-container{
+  grid-template-areas: "video recording-control"
+                       "audio recording-control"
+                       "filepath filepath";
+}
+
+.App:not(.is-recording) .app-container{
+  grid-template-areas: "video settings-control"
+                       "audio settings-control"
+                       "filepath filepath";
+}
+
+.App.is-recording .settings-control{
+  display: none;
+}
+
+.App:not(.is-recording) .recording-control{
+  display: none;
+}
+
+/* Video Preview
+*******************/
+.video-preview{
+  grid-area: video;
+  width: 100%;
+}
+.audio-visualization-container{
+  grid-area: audio;
+}
+
+
+
+/* Settings Control
+*******************/
+.settings-control{
+  grid-area: settings-control;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.settings-sources{
+  display: flex;
+  flex-flow: column;
+
+}
+/* Recording Control
+*******************/
+.recording-control{
+  grid-area: recording-control;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+/* Record Control
+*******************/
+.record-control{
+  display: flex;
+  grid-area: buttons;
+}
+.record-control-button{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  font-size: 25px;
+  color: #aaacb4;
+}
+.record-control-button:hover{
+  color: #d6e1ec;
+}
+
+.record-control-button span{
+  font-size: 16px;
+}
+
+/* AudioSourceList
+*******************/
+
+/* VideoSourceList
+*******************/
+
+/* AudioVisualization
+**********************/
+
+/* File Path
+**********************/
+.save-file-container{
+  grid-area: filepath;
+}
+
+.save-file-path{
+  display: grid;
+  grid-template-columns: 1fr 100px 60px;
+  grid-gap: 10px;
+}
+
+/* TimeCounter
+*******************/
+.time-counter{
+  display: flex;
+  background-color: #2f333c;
+  padding: 10px 15px;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  font-size: 25px;
+}
