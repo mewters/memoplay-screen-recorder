@@ -34,17 +34,19 @@ class VideoSourceList extends Component{
     }
 
     _handleChange = (event) => {
-        const selectedSource = this.state.screenSources.find(item => item.id === event.target.value);
+        const {screenSources, windowSources} = this.state,
+            selectedSource = [...screenSources, ...windowSources].find(item => item.id === event.target.value);
         this.selectSource(selectedSource);
     }
 
     _loadFromStorage(){
-        const sourceId = localStorage.getItem('_video_source'),
-            selectedSource = this.state.screenSources.find(item => item.id === sourceId);
+        const {screenSources, windowSources} = this.state,
+            sourceId = localStorage.getItem('_video_source'),
+            selectedSource = [...screenSources, ...windowSources].find(item => item.id === sourceId);
         if(selectedSource){
             this.selectSource(selectedSource);
         }else{
-            this.selectSource(this.state.screenSources[0]);
+            this.selectSource(screenSources[0]);
         }
     }
 
@@ -60,10 +62,15 @@ class VideoSourceList extends Component{
         const {state} = this;
         return (
             <div>
-                <div>Screens</div>
+                <div>Video input  source</div>
                 <select value={state.selectedSource.id} onChange={(this._handleChange)} >
+                    <option>-- Screens</option>
                     {
                         state.screenSources.map(item => <option key={item.id} value={item.id} >{item.name}</option>)
+                    }
+                    <option>-- windows</option>
+                    {
+                        state.windowSources.map(item => <option key={item.id} value={item.id} >{item.name}</option>)
                     }
                 </select>
                 {/*

@@ -92,7 +92,8 @@ class App extends Component {
       stream = this.video.current.srcObject;
     if(videoTarget && !isRecording){
       if(audioTarget){
-        const audioTracks = audioTarget.getAudioTracks();
+        const audioStream = await UserMediaService.getAudio(audioTarget),
+          audioTracks = audioStream.getAudioTracks();
         stream.addTrack(audioTracks[0]);
       }
       RecorderService.start(stream);
