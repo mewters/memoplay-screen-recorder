@@ -20,9 +20,7 @@ export const UserMediaService = {
       let audio = true;
       if(source){
         audio = {
-          mandatory: {
-            chromeMediaSource: 'desktop',
-          }
+          deviceId: source.deviceId
         };
       }
       return navigator.mediaDevices.getUserMedia({

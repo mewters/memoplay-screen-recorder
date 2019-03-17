@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
+import { UserMediaService } from './../services/UserMediaService';
+
 class AudioVisualization extends Component{
     static defaultProps = {
-        audioStream: null
+        audioDevice: null
     }
 
     constructor(props){
@@ -12,7 +14,7 @@ class AudioVisualization extends Component{
     }
 
     async componentDidUpdate(){
-        if(this.props.audioStream){
+        if(this.props.audioDevice){
             this.start();
         }else{
             this.stop();
@@ -21,7 +23,7 @@ class AudioVisualization extends Component{
 
     async componentDidMount(){
         this.canvasCtx = this.canvas.current.getContext('2d');
-        if(this.props.audioStream){
+        if(this.props.audioDevice){
             this.start();
         }
     }
@@ -38,18 +40,18 @@ class AudioVisualization extends Component{
         this.clearCanvas();
     }
 
-    startAudio(){
-        if(this.props.audioStream){
+    async startAudio(){
+        if(this.props.audioDevice){
+            this.audioStream = await UserMediaService.getAudio(this.props.audioDevice);
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)(),
             analyser = audioCtx.createAnalyser(),
-            source = audioCtx.createMediaStreamSource(this.props.audioStream);
+            source = audioCtx.createMediaStreamSource(this.audioStream);
         
             source.connect(analyser);
 
             analyser.fftSize = 256;
             this.analyser = analyser;
             this.bufferLength = analyser.frequencyBinCount;
-            console.log(this.bufferLength)
             this.dataArray = new Uint8Array(this.bufferLength);
         }
     }
@@ -72,10 +74,15 @@ class AudioVisualization extends Component{
             const canvas = this.canvas.current,
                 {width, height} = canvas,
                 {canvasCtx, bufferLength, dataArray, analyser} = this;
-
+            
             this.clearCanvas();
 
             requestAnimationFrame(this.draw.bind(this));
+
+            if(!this.audioStream){
+                return false;
+            }
+
     
             analyser.getByteFrequencyData(dataArray);
     

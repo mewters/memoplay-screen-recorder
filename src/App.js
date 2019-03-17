@@ -65,7 +65,8 @@ class App extends Component {
 
   onAudioSourceSelect = async (source) => {
     this.setState({audioTarget: source});
-    console.log(source)
+    const stream = await UserMediaService.getAudio(source);
+    console.log(source, stream)
   }
 
   onRecordSystemAudioChange = async (event) => {
@@ -87,11 +88,11 @@ class App extends Component {
       return false;
     }
 
-    const {videoTarget, isRecording, canRecordSystemAudio, systemAudioTarget} = this.state,
+    const {videoTarget, audioTarget, isRecording, canRecordSystemAudio, systemAudioTarget} = this.state,
       stream = this.video.current.srcObject;
     if(videoTarget && !isRecording){
-      if(canRecordSystemAudio){
-        const audioTracks = systemAudioTarget.getAudioTracks();
+      if(audioTarget){
+        const audioTracks = audioTarget.getAudioTracks();
         stream.addTrack(audioTracks[0]);
       }
       RecorderService.start(stream);
@@ -194,7 +195,7 @@ class App extends Component {
 
 
   render() {
-    const { isRecording, canRecordSystemAudio, systemAudioTarget } = this.state;
+    const { isRecording, canRecordSystemAudio, audioTarget } = this.state;
     let appClassName = 'App';
     if(isRecording){
       appClassName += ' is-recording';
@@ -204,14 +205,14 @@ class App extends Component {
         <div className="app-container" >
           <video className="video-preview" ref={this.video} />
           <div className="audio-visualization-container" >
-            <AudioVisualization height={50} width={100} audioStream={systemAudioTarget}  />
+            <AudioVisualization height={50} width={100} audioDevice={audioTarget}  />
           </div>
 
           <div className="settings-control">
             <div className="settings-sources" >
               <VideoSourceList onSelect={this.onVideoSourceSelect} />
               <AudioSourceList onSelect={this.onAudioSourceSelect} />
-              <label>
+              <label style={{'display': 'none'}} >
                 <input disabled type="checkbox" checked={canRecordSystemAudio} onChange={this.onRecordSystemAudioChange} /> Record System Audio
               </label>
             </div>

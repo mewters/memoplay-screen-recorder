@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 
-const require = window.require;
-
 class AudioSourceList extends Component{
 
     static defaultProps = {
@@ -56,7 +54,7 @@ class AudioSourceList extends Component{
         return (
             <div>
                 <div>Audio input source</div>
-                <select disabled value={state.selectedSource.deviceId} onChange={this._handleChange} >
+                <select value={state.selectedSource.deviceId} onChange={this._handleChange} >
                     {
                         state.audioSources.map(item => <option key={item.deviceId} value={item.deviceId} >{item.label}</option>)
                     }

@@ -1,4 +1,3 @@
-const require = window.require;
 
 export const RecorderService = {
     recorder: null,
