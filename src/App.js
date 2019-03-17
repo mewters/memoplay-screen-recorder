@@ -31,6 +31,8 @@ class App extends Component {
     this.video = React.createRef();
     this.timeCounter = React.createRef();
     this.savefilepath = React.createRef();
+    this.videoSourceList = React.createRef();
+    this.audioSourceList = React.createRef();
   }
 
   componentDidMount(){
@@ -55,18 +57,32 @@ class App extends Component {
 
   onVideoSourceSelect = async (source) => {
     this.setState({videoTarget: source});
-    const video = this.video.current,
-      stream = await UserMediaService.getVideo(source);
-    console.log(source)
-    video.srcObject = stream;
-    video.muted = true;
-    video.onloadedmetadata = (e) => video.play();
+    const video = this.video.current;
+
+    UserMediaService.getVideo(source)
+      .then(stream => {
+        console.log(source, stream)
+        video.srcObject = stream;
+        video.muted = true;
+        video.onloadedmetadata = (e) => video.play();
+      })
+      .catch(() => {
+        const videoSourceList = this.videoSourceList.current;
+        videoSourceList.selectSource(videoSourceList.state.screenSources[0]);
+      })
   }
 
   onAudioSourceSelect = async (source) => {
     this.setState({audioTarget: source});
-    const stream = await UserMediaService.getAudio(source);
-    console.log(source, stream)
+
+    UserMediaService.getAudio(source)
+      .then(stream => {
+        console.log(source, stream)
+      })
+      .catch(() => {
+        const audioSourceList = this.audioSourceList.current;
+        audioSourceList.selectSource(audioSourceList.state.audioSources[0]);
+      })
   }
 
   onRecordSystemAudioChange = async (event) => {
@@ -211,8 +227,8 @@ class App extends Component {
 
           <div className="settings-control">
             <div className="settings-sources" >
-              <VideoSourceList onSelect={this.onVideoSourceSelect} />
-              <AudioSourceList onSelect={this.onAudioSourceSelect} />
+              <VideoSourceList ref={this.videoSourceList} onSelect={this.onVideoSourceSelect} />
+              <AudioSourceList ref={this.audioSourceList} onSelect={this.onAudioSourceSelect} />
               <label style={{'display': 'none'}} >
                 <input disabled type="checkbox" checked={canRecordSystemAudio} onChange={this.onRecordSystemAudioChange} /> Record System Audio
               </label>
