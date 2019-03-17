@@ -21,9 +21,9 @@
     "electron": "electron .",
     "electron-dev:win": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
     "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron .",
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64  --prune=true --icon=img/icons/icon.icns --out=release-builds",
-    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32  --prune=true --icon=img/icons/pmx-logo-128.ico --out=release-builds ",
-    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64  --prune=true --icon=img/icons/pmx-logo-128.png --out=release-builds"
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64  --prune=true --icon=img/icons/mp-logo-128.icns --out=release-builds",
+    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32  --prune=true --icon=img/icons/mp-logo-128.ico --out=release-builds ",
+    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64  --prune=true --icon=img/icons/mp-logo-128.png --out=release-builds"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -35,6 +35,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "electron": "^4.1.0"
+    "electron": "^4.1.0",
+    "electron-packager": "^13.1.1"
   }
 }
