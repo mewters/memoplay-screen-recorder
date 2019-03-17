@@ -1,9 +1,10 @@
 # MemoPlay Screen Recorder
 メモプレイ
 
-![MemoPlay Screen](./img/memoplay-screen.png){width="200px"}
+<img src="./img/memoplay-screen.png" width="200" alt="MemoPlay Screen">
 
-![MemoPlay Screen - Recording](./img/memoplay-screen-recording.png){width="200px"}
+<img src="./img/memoplay-screen-recording.png" width="200" alt="MemoPlay Screen - Recording">
+
 
 ## Hotkeys
 | Function | Windows / Linux | Mac |
