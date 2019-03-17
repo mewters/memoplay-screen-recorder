@@ -11,16 +11,15 @@
   "main": "src/electron-starter.js",
   "scripts": {
     "start": "npm run start-react & npm run electron-dev",
-
+    "start:win": "npm run start-react:win & npm run electron-dev:win",
     "start-react": "BROWSER=none react-scripts start",
+    "start-react:win": "react-scripts start",
     "build-react": "react-scripts build",
     "test-react": "react-scripts test --env=jsdom",
     "eject-react": "react-scripts eject",
-
     "electron": "electron .",
     "electron-dev:win": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
     "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron .",
-
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64  --prune=true --icon=img/icons/icon.icns --out=release-builds",
     "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32  --prune=true --icon=img/icons/pmx-logo-128.ico --out=release-builds ",
     "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64  --prune=true --icon=img/icons/pmx-logo-128.png --out=release-builds"

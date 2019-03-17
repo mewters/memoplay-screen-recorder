@@ -16,16 +16,16 @@ const startUrl = process.env.ELECTRON_START_URL || url.format({
 
 function createWindow () {
   mainWindow = new BrowserWindow({
-    width: 480,
-    height: 200,
-    minWidth: 480,
-    minHeight: 200,
+    width: 500,
+    height: 230,
+    minWidth: 500,
+    minHeight: 230,
     resizable: false,
     webPreferences: {
       nodeIntegration: true
     }
   });
-
+  mainWindow.setMenu(null);
   mainWindow.loadURL(startUrl);
 
   if(startUrl.includes('http')){
