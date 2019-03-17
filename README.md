@@ -1,9 +1,11 @@
 # MemoPlay Screen Recorder
 メモプレイ
 
-<img src="./img/memoplay-screen.png" width="200" alt="MemoPlay Screen">
+Simple Screen Recorder made with Electron.
 
-<img src="./img/memoplay-screen-recording.png" width="200" alt="MemoPlay Screen - Recording">
+<img src="./img/memoplay-screen.png" width="500" alt="MemoPlay Screen">
+
+<img src="./img/memoplay-screen-recording.png" width="500" alt="MemoPlay Screen - Recording">
 
 
 ## Hotkeys
