@@ -5,38 +5,36 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "electron-is-dev": "^1.0.1",
     "handbrake-js": "^3.0.8",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8"
   },
   "homepage": "./",
-  "main": "src/electron-starter.js",
+  "main": "public/electron.js",
   "scripts": {
-    "start": "npm run start-react & npm run electron-dev",
-    "start:win": "npm run start-react:win & npm run electron-dev:win",
-    "start-react": "BROWSER=none react-scripts start",
-    "start-react:win": "react-scripts start",
+    "start": "react-scripts start",
     "build-react": "react-scripts build",
     "test-react": "react-scripts test --env=jsdom",
     "eject-react": "react-scripts eject",
     "electron": "electron .",
-    "electron-dev:win": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
-    "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron .",
+    "electron-dev": "concurrently \"BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64  --prune=true --icon=img/icons/mp-logo-128.icns --out=release-builds",
     "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32  --prune=true --icon=img/icons/mp-logo-128.ico --out=release-builds ",
     "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64  --prune=true --icon=img/icons/mp-logo-128.png --out=release-builds",
-    "pack": "build --dir",
-    "dist": "build"
-  },
-  "directories": {
-    "buildResources": "build-electron",
-    "output" : "release-builds",
-    "app" : "src"
+    "electron-pack": "build"
   },
   "build": {
-    "appId": "memoplay",
-    "category": "com.mewters.memoplay",
+    "appId": "com.mewters.memoplay",
+    "productName": "MemoPlay",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "build-electron"
+    },
     "dmg": {
       "contents": [
         {
@@ -59,7 +57,7 @@
     },
     "win": {
       "target": "squirrel",
-      "icon": "build/icon.ico"
+      "icon": "build-electron/icon.ico"
     }
   },
   "eslintConfig": {
@@ -72,8 +70,12 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "concurrently": "^4.1.0",
     "electron": "^4.1.0",
     "electron-builder": "^20.39.0",
-    "electron-packager": "^13.1.1"
-  }
+    "electron-packager": "^13.1.1",
+    "typescript": "^3.3.3333",
+    "wait-on": "^3.2.0"
+  },
+  "author": "Akira Hanashiro"
 }

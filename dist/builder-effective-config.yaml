@@ -1,0 +1,29 @@
+directories:
+  output: dist
+  buildResources: build-electron
+files:
+  - filter:
+      - build/**/*
+      - build/**/*
+      - node_modules/**/*
+extraMetadata:
+  main: build/electron.js
+appId: com.mewters.memoplay
+productName: MemoPlay
+dmg:
+  contents:
+    - x: 110
+      'y': 150
+    - x: 240
+      'y': 150
+      type: link
+      path: /Applications
+linux:
+  target:
+    - AppImage
+    - deb
+win:
+  target: squirrel
+  icon: build-electron/icon.ico
+extends: react-cra
+electronVersion: 4.1.0
