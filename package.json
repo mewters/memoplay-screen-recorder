@@ -1,5 +1,7 @@
 {
   "name": "memoplay-screen-recorder",
+  "productName": "MemoPlay Screen Recorder",
+  "description": "A simple screen recorder",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -23,7 +25,42 @@
     "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron .",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64  --prune=true --icon=img/icons/mp-logo-128.icns --out=release-builds",
     "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32  --prune=true --icon=img/icons/mp-logo-128.ico --out=release-builds ",
-    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64  --prune=true --icon=img/icons/mp-logo-128.png --out=release-builds"
+    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64  --prune=true --icon=img/icons/mp-logo-128.png --out=release-builds",
+    "pack": "build --dir",
+    "dist": "build"
+  },
+  "directories": {
+    "buildResources": "build-electron",
+    "output" : "release-builds",
+    "app" : "src"
+  },
+  "build": {
+    "appId": "memoplay",
+    "category": "com.mewters.memoplay",
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "squirrel",
+      "icon": "build/icon.ico"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -36,6 +73,7 @@
   ],
   "devDependencies": {
     "electron": "^4.1.0",
+    "electron-builder": "^20.39.0",
     "electron-packager": "^13.1.1"
   }
 }
