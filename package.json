@@ -3,7 +3,7 @@
   "productName": "MemoPlay Screen Recorder",
   "description": "A simple screen recorder",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "electron-is-dev": "^1.0.1",
     "handbrake-js": "^3.0.8",
