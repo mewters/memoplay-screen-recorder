@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 const {app, BrowserWindow, globalShortcut, ipcMain, Tray, Menu} = require('electron');
 const path = require('path');
 const url = require('url');
@@ -49,6 +48,8 @@ function createWindow () {
 
   if(isDev){
     mainWindow.webContents.openDevTools();
+  }else{
+    mainWindow.webContents.on("devtools-opened", () => { mainWindow.webContents.closeDevTools(); });
   }
   createTray();
 
@@ -59,6 +60,7 @@ function createWindow () {
   })
 
   setShortcuts();
+  
 }
 
 app.on('ready', createWindow);
