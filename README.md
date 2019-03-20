@@ -10,7 +10,7 @@ Simple Screen Recorder made with Electron.
 ## Instalation
 
 ### NPM
-> $ npm i -g @mewters/memoplay-screen-recorder
+> $ npm i -g memoplay-screen-recorder
 
 To start, execute:
 > $ memoplay
