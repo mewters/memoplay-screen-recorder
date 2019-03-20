@@ -1,7 +1,8 @@
+#!/usr/bin/env node
 const {app, BrowserWindow, globalShortcut, ipcMain, Tray, Menu} = require('electron');
 const path = require('path');
 const url = require('url');
-const isDev = require('electron-is-dev');
+const isDev = false//require('electron-is-dev');
 
 const shortcuts = {
   play: process.platform !== 'darwin' ? 'F9' : 'Command+Shift+2',
