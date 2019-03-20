@@ -138,6 +138,8 @@ canvas{
   align-items: center;
   box-sizing: border-box;
   font-size: 25px;
+  min-width: 150px;
+  font-family: 'Roboto Mono', monospace;
 }
 
 

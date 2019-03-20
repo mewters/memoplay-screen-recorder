@@ -58,6 +58,9 @@ class App extends Component {
     ipcRenderer.on('stop', ()=> {
       this.stop();
     });
+    ipcRenderer.on('delete', ()=> {
+      this.cancelRecording();
+    });
   }
 
   onVideoSourceSelect = async (source) => {
@@ -198,8 +201,6 @@ class App extends Component {
     remote.dialog.showMessageBox(null, options, (response) => {
       if(response === 1){ // Yes
         this.deleteRecording();
-      }else{
-        this.resume();
       }
     })
   }

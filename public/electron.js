@@ -16,11 +16,14 @@ const trayDefaultIcon = path.join(__dirname, '/../img/icons/tray-icon-stroke.png
   trayPausedIcon = path.join(__dirname, '/../img/icons/tray-icon-white.png'),
   trayDefaultMenu = Menu.buildFromTemplate([
     { label: `Start Recording      ${shortcuts.play}`, click: () => mainWindow.webContents.send('play') },
-    { label: 'Quit', click: () => app.quit() }
+    { type: 'separator' },
+    { label: 'Quit', role: 'quit' }
   ]),
   trayRecordingMenu = Menu.buildFromTemplate([
     { label: `Pause/Resume Recording      ${shortcuts.play}`, click: () => mainWindow.webContents.send('play') },
-    { label: `Stop Recording              ${shortcuts.stop}`, click: () => mainWindow.webContents.send('stop') }
+    { label: `Stop Recording              ${shortcuts.stop}`, click: () => mainWindow.webContents.send('stop') },
+    { type: 'separator' },
+    { label: `Cancel Recording`, click: () => mainWindow.webContents.send('delete') }
   ]);
 
 const startUrl = isDev ? 'http://localhost:3000' : url.format({
@@ -35,7 +38,7 @@ function createWindow () {
     height: 230,
     minWidth: 500,
     minHeight: 230,
-    resizable: false,
+    resizable: isDev,
     webPreferences: {
       nodeIntegration: true
     }
