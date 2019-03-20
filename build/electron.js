@@ -9,11 +9,7 @@ const shortcuts = {
 }
 
 let mainWindow
-const startUrl = process.env.ELECTRON_START_URL || url.format({
-  pathname: path.join(__dirname, '/../build/index.html'),
-  protocol: 'file:',
-  slashes: true
-});
+const startUrl = (isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
 
 function createWindow () {
   mainWindow = new BrowserWindow({
@@ -21,7 +17,7 @@ function createWindow () {
     height: 230,
     minWidth: 500,
     minHeight: 230,
-    resizable: false,
+    resizable: (isDev ? true : false),
     webPreferences: {
       nodeIntegration: true
     }
@@ -29,7 +25,7 @@ function createWindow () {
   mainWindow.setMenu(null);
   mainWindow.loadURL(startUrl);
 
-  if(startUrl.includes('http')){
+  if(isDev){
     mainWindow.webContents.openDevTools();
   }
 

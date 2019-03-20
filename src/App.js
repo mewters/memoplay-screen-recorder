@@ -133,6 +133,7 @@ class App extends Component {
       RecorderService.pause();
       this.setState({isRecording: true, isPaused: true});
       this.timeCounter.current.stop();
+      ipcRenderer.send('win:pause');
     }
   }
 
@@ -142,6 +143,7 @@ class App extends Component {
       RecorderService.resume();
       this.setState({isRecording: true, isPaused: false});
       this.timeCounter.current.start();
+      ipcRenderer.send('win:resume');
     }
   }
 
@@ -179,6 +181,7 @@ class App extends Component {
       this.setState({isRecording: false, isPaused: false});
       this.timeCounter.current.stop();
       this.timeCounter.current.reset();
+      ipcRenderer.send('win:cancel');
     }
   }
 
