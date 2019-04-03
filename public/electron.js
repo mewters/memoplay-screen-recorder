@@ -144,26 +144,34 @@ async function selectVideos(){
 
 async function convertVideoList(format = 'mp4'){
   const filesList = await selectVideos();
-  await Promise.all(filesList.map(file => convertVideo(file, format)));
+  await Promise.all(filesList.map((file, index) => convertVideo(file, format, index, filesList.length)));
   console.log('finish all')
 }
 
-async function convertVideo(input, format){
+async function convertVideo(input, format, index = 0, total = 0){
   const hbjs = require('handbrake-js'),
     output =  `${input.replace(/\.webm$/i, '.')}${format}`;
-  console.log('start: ', input)
-  console.time(input);
   return new Promise((resolve, reject) => {
     hbjs.spawn({ input , output })
     .on('error', err => {
       console.log('error on converting');
       reject();
     })
+    .on('begin', progress => {
+      console.time(input);
+      if(total){
+        console.log(`start: ${index + 1}/${total} - `, input);
+      }
+    })
     .on('progress', progress => {
       //console.log(input,cprogress)
     })
     .on('end', err => {
-      console.log('end:' , input)
+      if(total){
+        console.log(`end: ${index + 1}/${total} - `, input);
+      }else{
+        console.log('end:' , input)
+      }
       console.timeEnd(input);
       resolve();
     })
