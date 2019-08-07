@@ -15,20 +15,16 @@
   "main": "public/electron.js",
   "scripts": {
     "start": "npm run electron-dev-env",
-
     "start-react": "react-scripts start",
     "build-react": "react-scripts build",
     "test-react": "react-scripts test --env=jsdom",
     "eject-react": "react-scripts eject",
-
     "electron": "electron .",
     "electron-dev": "electron . --dev",
     "electron-dev-env": "concurrently \"BROWSER=none npm run start-react\" \"wait-on http://localhost:3000 && npm run electron-dev\"",
-    
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64  --prune=true --icon=img/icons/mp-logo-128.icns --out=release-builds",
     "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32  --prune=true --icon=img/icons/mp-logo-128.ico --out=release-builds ",
     "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64  --prune=true --icon=img/icons/mp-logo-128.png --out=release-builds",
-    
     "electron-pack": "build"
   },
   "build": {
