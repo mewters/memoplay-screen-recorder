@@ -48,6 +48,8 @@ function createWindow () {
 
   if(isDev){
     mainWindow.webContents.openDevTools();
+  }else{
+    mainWindow.webContents.on("devtools-opened", () => { mainWindow.webContents.closeDevTools(); });
   }
   createTray();
 
@@ -58,6 +60,7 @@ function createWindow () {
   })
 
   setShortcuts();
+  
 }
 
 app.on('ready', createWindow);

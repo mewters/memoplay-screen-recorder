@@ -8,6 +8,7 @@ Simple Screen Recorder made with Electron.
 <img src="./img/memoplay-screen-recording.png" width="500" alt="MemoPlay Screen - Recording">
 
 
+
 ## Hotkeys
 | Function | Windows / Linux | Mac |
 | ------ | ------ |  ------ | 

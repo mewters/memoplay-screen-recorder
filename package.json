@@ -2,13 +2,14 @@
   "name": "memoplay-screen-recorder",
   "productName": "MemoPlay Screen Recorder",
   "description": "A simple screen recorder",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
   "dependencies": {
+    "electron": "^4.1.0",
     "handbrake-js": "^3.0.8",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-scripts": "2.1.8"
+    "shelljs": "^0.8.3"
   },
   "homepage": "./",
   "main": "public/electron.js",
@@ -76,11 +77,24 @@
   ],
   "devDependencies": {
     "concurrently": "^4.1.0",
-    "electron": "^4.1.0",
     "electron-builder": "^20.39.0",
     "electron-packager": "^13.1.1",
+    "react-scripts": "2.1.8",
     "typescript": "^3.3.3333",
     "wait-on": "^3.2.0"
   },
-  "author": "Akira Hanashiro"
+  "author": "Akira Hanashiro (https://github.com/hanashiro)",
+  "keywords": [
+    "screen recorder",
+    "mewters",
+    "hanashiro"
+  ],
+  "preferGlobal": true,
+  "bin": {
+    "memoplay": "./bin/run-electron.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mewters/memoplay-screen-recorder.git"
+  }
 }

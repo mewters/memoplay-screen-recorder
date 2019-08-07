@@ -1,4 +1,4 @@
-const {app, BrowserWindow, globalShortcut, ipcMain, Tray, Menu} = require('electron');
+const {app, BrowserWindow, globalShortcut, ipcMain, Tray, Menu, dialog} = require('electron');
 const path = require('path');
 const url = require('url');
 const isDev = process.argv.includes('--dev');//require('electron-is-dev');
@@ -16,6 +16,7 @@ const trayDefaultIcon = path.join(__dirname, '/../img/icons/tray-icon-stroke.png
   trayPausedIcon = path.join(__dirname, '/../img/icons/tray-icon-white.png'),
   trayDefaultMenu = Menu.buildFromTemplate([
     { label: `Start Recording      ${shortcuts.play}`, click: () => mainWindow.webContents.send('play') },
+    { label: 'Convert Videos', click: () => convertVideoList() },
     { type: 'separator' },
     { label: 'Quit', role: 'quit' }
   ]),
@@ -48,6 +49,8 @@ function createWindow () {
 
   if(isDev){
     mainWindow.webContents.openDevTools();
+  }else{
+    mainWindow.webContents.on("devtools-opened", () => { mainWindow.webContents.closeDevTools(); });
   }
   createTray();
 
@@ -58,6 +61,7 @@ function createWindow () {
   })
 
   setShortcuts();
+  
 }
 
 app.on('ready', createWindow);
@@ -99,20 +103,14 @@ function unsetShortcuts(){
   globalShortcut.unregisterAll();
 }
 
-ipcMain.on('win:convert-video', (event, args) => {
-  const hbjs = require('handbrake-js'),
-    {folder, fileName, type} = args,
-    input = `${folder}/${fileName}`,
-    output =  `${folder}/${fileName.replace(/\.webm$/i, '.')}${type}`;
+ipcMain.on('win:convert-video', async (event, args) => {
+  const {folder, fileName, type} = args,
+    input = `${folder}/${fileName}`;
 
-  hbjs.spawn({ input , output })
-    .on('error', err => {
-      console.log('error on converting');
-    })
-    .on('end', err => {
-      require('fs').unlink(input, () => {});
-      event.sender.send('back:convert-video:complete');
-    })
+  await convertVideo(input, type);
+
+  require('fs').unlink(input, () => {});
+  event.sender.send('back:convert-video:complete');
 })
 
 ipcMain.on('win:start', () => {
@@ -135,3 +133,47 @@ ipcMain.on('win:cancel', () => {
   tray.setContextMenu(trayDefaultMenu);
   tray.setImage(trayDefaultIcon);
 })
+
+
+async function selectVideos(){
+  let types = [ {name: 'Movies', extensions: ['webm', 'avi', 'mp4']} ],
+    options = {filters:types, properties:["multiSelections","openFile"]},
+    files = dialog.showOpenDialog(options);
+  return files;
+}
+
+async function convertVideoList(format = 'mp4'){
+  const filesList = await selectVideos();
+  await Promise.all(filesList.map((file, index) => convertVideo(file, format, index, filesList.length)));
+  console.log('finish all')
+}
+
+async function convertVideo(input, format, index = 0, total = 0){
+  const hbjs = require('handbrake-js'),
+    output =  `${input.replace(/\.webm$/i, '.')}${format}`;
+  return new Promise((resolve, reject) => {
+    hbjs.spawn({ input , output })
+    .on('error', err => {
+      console.log('error on converting');
+      reject();
+    })
+    .on('begin', progress => {
+      console.time(input);
+      if(total){
+        console.log(`start: ${index + 1}/${total} - `, input);
+      }
+    })
+    .on('progress', progress => {
+      //console.log(input,cprogress)
+    })
+    .on('end', err => {
+      if(total){
+        console.log(`end: ${index + 1}/${total} - `, input);
+      }else{
+        console.log('end:' , input)
+      }
+      console.timeEnd(input);
+      resolve();
+    })
+  })
+}
