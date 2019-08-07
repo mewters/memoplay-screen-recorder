@@ -2,14 +2,14 @@
   "name": "memoplay-screen-recorder",
   "productName": "MemoPlay Screen Recorder",
   "description": "A simple screen recorder",
-  "version": "1.0.0",
+  "version": "1.0.7",
   "private": false,
   "dependencies": {
     "electron": "^4.1.0",
+    "electroner": "^4.0.8",
     "handbrake-js": "^3.0.8",
     "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "shelljs": "^0.8.3"
+    "react-dom": "^16.8.4"
   },
   "homepage": "./",
   "main": "public/electron.js",
@@ -87,7 +87,7 @@
   ],
   "preferGlobal": true,
   "bin": {
-    "memoplay": "./bin/run-electron.js"
+    "memoplay": "./bin-run-electron.js"
   },
   "repository": {
     "type": "git",

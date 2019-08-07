@@ -7,6 +7,14 @@ Simple Screen Recorder made with Electron.
 
 <img src="./img/memoplay-screen-recording.png" width="500" alt="MemoPlay Screen - Recording">
 
+## Instalation	
+
+### NPM	
+> $ npm i -g memoplay-screen-recorder	
+
+To start MemoPlay execute:	
+
+> $ memoplay	
 
 
 ## Hotkeys
