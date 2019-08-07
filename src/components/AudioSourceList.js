@@ -73,7 +73,7 @@ class AudioSourceList extends Component{
 
 function AudioSourceListItem(props){
     const { item, selectedSource } = props,
-        cutIndex = item.label.lastIndexOf('('),
+        cutIndex = item.label.lastIndexOf('('), 
         label = item.label.substr(0, cutIndex).trim();
     let classes = '';
 

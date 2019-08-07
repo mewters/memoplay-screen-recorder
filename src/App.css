@@ -57,6 +57,67 @@ canvas{
 }
 
 
+.audio-visualization-mini{
+  position: relative;
+  height: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.audio-visualization-bar-container{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.audio-visualization-bar-container .audio-bar{
+  width: 10px;
+  min-height: 10px;
+  background-color: green;
+  border-radius: 100%;
+  margin: 0 5px;
+  transition: height .15s ease-in-out;
+}
+
+.bar-height-00{
+  height: 0%;
+}
+.bar-height-10{
+  height: 10%;
+}
+.bar-height-20{
+  height: 20%;
+}
+.bar-height-30{
+  height: 30%;
+}
+.bar-height-40{
+  height: 40%;
+}
+.bar-height-50{
+  height: 50%;
+}
+.bar-height-60{
+  height: 60%;
+}
+.bar-height-70{
+  height: 70%;
+}
+.bar-height-80{
+  height: 80%;
+}
+.bar-height-90{
+  height: 90%;
+}
+.bar-height-100{
+  height: 100%;
+}
 
 /* Settings Control
 *******************/
