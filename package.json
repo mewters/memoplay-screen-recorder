@@ -2,7 +2,7 @@
   "name": "memoplay-screen-recorder",
   "productName": "MemoPlay Screen Recorder",
   "description": "A simple screen recorder",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "private": false,
   "dependencies": {
     "electron": "^4.1.0",
