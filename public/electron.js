@@ -35,10 +35,10 @@ const startUrl = isDev ? 'http://localhost:3000' : url.format({
 
 function createWindow () {
   mainWindow = new BrowserWindow({
-    width: 500,
-    height: 230,
-    minWidth: 500,
-    minHeight: 230,
+    width: 510,
+    height: 240,
+    minWidth: 510,
+    minHeight: 240,
     resizable: isDev,
     webPreferences: {
       nodeIntegration: true
@@ -107,10 +107,15 @@ ipcMain.on('win:convert-video', async (event, args) => {
   const {folder, fileName, type} = args,
     input = `${folder}/${fileName}`;
 
-  await convertVideo(input, type);
+  try{
+    await convertVideo(input, type);
+  
+    require('fs').unlink(input, () => {});
+    event.sender.send('back:convert-video:complete');
 
-  require('fs').unlink(input, () => {});
-  event.sender.send('back:convert-video:complete');
+  }catch(error){
+    console.log('Convertion Error: ', error);
+  }
 })
 
 ipcMain.on('win:start', () => {
@@ -143,9 +148,13 @@ async function selectVideos(){
 }
 
 async function convertVideoList(format = 'mp4'){
-  const filesList = await selectVideos();
-  await Promise.all(filesList.map((file, index) => convertVideo(file, format, index, filesList.length)));
-  console.log('finish all')
+  try{
+    const filesList = await selectVideos();
+    await Promise.all(filesList.map((file, index) => convertVideo(file, format, index, filesList.length)));
+    console.log('finish all')
+  }catch(error){
+    console.log('ERROR: ', error)
+  }
 }
 
 async function convertVideo(input, format, index = 0, total = 0){
@@ -153,27 +162,27 @@ async function convertVideo(input, format, index = 0, total = 0){
     output =  `${input.replace(/\.webm$/i, '.')}${format}`;
   return new Promise((resolve, reject) => {
     hbjs.spawn({ input , output })
-    .on('error', err => {
-      console.log('error on converting');
-      reject();
-    })
-    .on('begin', progress => {
-      console.time(input);
-      if(total){
-        console.log(`start: ${index + 1}/${total} - `, input);
-      }
-    })
-    .on('progress', progress => {
-      //console.log(input,cprogress)
-    })
-    .on('end', err => {
-      if(total){
-        console.log(`end: ${index + 1}/${total} - `, input);
-      }else{
-        console.log('end:' , input)
-      }
-      console.timeEnd(input);
-      resolve();
-    })
+      .on('error', err => {
+        console.log('error on converting');
+        reject();
+      })
+      .on('begin', progress => {
+        console.time(input);
+        if(total){
+          console.log(`start: ${index + 1}/${total} - `, input);
+        }
+      })
+      .on('progress', progress => {
+        //console.log(input,cprogress)
+      })
+      .on('end', err => {
+        if(total){
+          console.log(`end: ${index + 1}/${total} - `, input);
+        }else{
+          console.log('end:' , input)
+        }
+        console.timeEnd(input);
+        resolve();
+      })
   })
 }

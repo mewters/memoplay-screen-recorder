@@ -56,7 +56,7 @@ class SaveFilepath extends Component{
                 <select name="format" onChange={this.handleChange} value={format} >
                     <option value="webm" >webm (default)</option>
                     {
-                        this.formatList.map(format => <option value={format} >{format}</option>)
+                        this.formatList.map(format => <option key={format} value={format} >{format}</option>)
                     }
                 </select>
                 <label>
