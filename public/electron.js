@@ -11,7 +11,8 @@ const shortcuts = {
 let mainWindow,
   tray;
 
-const trayDefaultIcon = path.join(__dirname, '/../img/icons/tray-icon-stroke.png'),
+const appIcon = path.join(__dirname, '/../img/icons/mp-logo-128.png'),
+  trayDefaultIcon = path.join(__dirname, '/../img/icons/tray-icon-stroke.png'),
   trayRecordingIcon = path.join(__dirname, '/../img/icons/tray-icon-red.png'),
   trayPausedIcon = path.join(__dirname, '/../img/icons/tray-icon-white.png'),
   trayDefaultMenu = Menu.buildFromTemplate([
@@ -40,6 +41,7 @@ function createWindow () {
     minWidth: 500,
     minHeight: 230,
     resizable: isDev,
+    icon: appIcon,
     webPreferences: {
       nodeIntegration: true
     }
