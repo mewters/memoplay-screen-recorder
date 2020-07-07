@@ -5,7 +5,7 @@
   "version": "1.0.8",
   "private": false,
   "dependencies": {
-    "electron": "^4.1.0",
+    "electron": "^7.2.4",
     "electroner": "^4.0.8",
     "handbrake-js": "^3.0.8",
     "react": "^16.8.4",
