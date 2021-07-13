@@ -1,96 +1,96 @@
 {
-  "name": "memoplay-screen-recorder",
-  "productName": "MemoPlay Screen Recorder",
-  "description": "A simple screen recorder",
-  "version": "1.0.8",
-  "private": false,
-  "dependencies": {
-    "electron": "^4.1.0",
-    "electroner": "^4.0.8",
-    "handbrake-js": "^3.0.8",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4"
-  },
-  "homepage": "./",
-  "main": "public/electron.js",
-  "scripts": {
-    "start": "npm run electron-dev-env",
-    "start-react": "react-scripts start",
-    "build-react": "react-scripts build",
-    "test-react": "react-scripts test --env=jsdom",
-    "eject-react": "react-scripts eject",
-    "electron": "electron .",
-    "electron-dev": "electron . --dev",
-    "electron-dev-env": "concurrently \"BROWSER=none npm run start-react\" \"wait-on http://localhost:3000 && npm run electron-dev\"",
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64  --prune=true --icon=img/icons/mp-logo-128.icns --out=release-builds",
-    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32  --prune=true --icon=img/icons/mp-logo-128.ico --out=release-builds ",
-    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64  --prune=true --icon=img/icons/mp-logo-128.png --out=release-builds",
-    "electron-pack": "build"
-  },
-  "build": {
-    "appId": "com.mewters.memoplay",
-    "productName": "MemoPlay",
-    "files": [
-      "build/**/*",
-      "node_modules/**/*"
-    ],
-    "directories": {
-      "buildResources": "build-electron"
+    "name": "memoplay-screen-recorder",
+    "productName": "MemoPlay Screen Recorder",
+    "description": "A simple screen recorder",
+    "version": "1.0.9",
+    "private": false,
+    "dependencies": {
+        "electron": "^4.1.0",
+        "electroner": "^4.0.8",
+        "handbrake-js": "^3.0.8",
+        "react": "^16.8.4",
+        "react-dom": "^16.8.4"
     },
-    "dmg": {
-      "contents": [
-        {
-          "x": 110,
-          "y": 150
+    "homepage": "./",
+    "main": "public/electron.js",
+    "scripts": {
+        "start": "npm run electron-dev-env",
+        "start-react": "react-scripts start",
+        "build-react": "react-scripts build",
+        "test-react": "react-scripts test --env=jsdom",
+        "eject-react": "react-scripts eject",
+        "electron": "electron .",
+        "electron-dev": "electron . --dev",
+        "electron-dev-env": "concurrently \"BROWSER=none npm run start-react\" \"wait-on http://localhost:3000 && npm run electron-dev\"",
+        "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64  --prune=true --icon=img/icons/mp-logo-128.icns --out=release-builds",
+        "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32  --prune=true --icon=img/icons/mp-logo-128.ico --out=release-builds ",
+        "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64  --prune=true --icon=img/icons/mp-logo-128.png --out=release-builds",
+        "electron-pack": "build"
+    },
+    "build": {
+        "appId": "com.mewters.memoplay",
+        "productName": "MemoPlay",
+        "files": [
+            "build/**/*",
+            "node_modules/**/*"
+        ],
+        "directories": {
+            "buildResources": "build-electron"
         },
-        {
-          "x": 240,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
+        "dmg": {
+            "contents": [
+                {
+                    "x": 110,
+                    "y": 150
+                },
+                {
+                    "x": 240,
+                    "y": 150,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ]
+        },
+        "linux": {
+            "target": [
+                "AppImage",
+                "deb"
+            ]
+        },
+        "win": {
+            "target": "squirrel",
+            "icon": "build-electron/icon.ico"
         }
-      ]
     },
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ]
+    "eslintConfig": {
+        "extends": "react-app"
     },
-    "win": {
-      "target": "squirrel",
-      "icon": "build-electron/icon.ico"
+    "browserslist": [
+        ">0.2%",
+        "not dead",
+        "not ie <= 11",
+        "not op_mini all"
+    ],
+    "devDependencies": {
+        "concurrently": "^4.1.0",
+        "electron-builder": "^20.39.0",
+        "electron-packager": "^13.1.1",
+        "react-scripts": "2.1.8",
+        "typescript": "^3.3.3333",
+        "wait-on": "^3.2.0"
+    },
+    "author": "Akira Hanashiro (https://github.com/hanashiro)",
+    "keywords": [
+        "screen recorder",
+        "mewters",
+        "hanashiro"
+    ],
+    "preferGlobal": true,
+    "bin": {
+        "memoplay": "./bin-run-electron.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/mewters/memoplay-screen-recorder.git"
     }
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
-  "devDependencies": {
-    "concurrently": "^4.1.0",
-    "electron-builder": "^20.39.0",
-    "electron-packager": "^13.1.1",
-    "react-scripts": "2.1.8",
-    "typescript": "^3.3.3333",
-    "wait-on": "^3.2.0"
-  },
-  "author": "Akira Hanashiro (https://github.com/hanashiro)",
-  "keywords": [
-    "screen recorder",
-    "mewters",
-    "hanashiro"
-  ],
-  "preferGlobal": true,
-  "bin": {
-    "memoplay": "./bin-run-electron.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mewters/memoplay-screen-recorder.git"
-  }
 }
