@@ -1,0 +1,17 @@
+{
+  "name": "memoplay-screen-recorder",
+  "productName": "MemoPlay Screen Recorder",
+  "description": "A simple screen recorder",
+  "version": "2.0.0",
+  "main": "./main.prod.js",
+  "author": {
+    "name": "Akira Hanashiro",
+    "url": "https://github.com/hanashiro"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r ../.erb/scripts/BabelRegister.js ../.erb/scripts/ElectronRebuild.js",
+    "postinstall": "yarn electron-rebuild"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}

@@ -1,0 +1,13 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    overflow-y: hidden;
+
+    min-width: 450px;
+    min-height: 170px;
+}
