@@ -32,6 +32,7 @@ import {
     PreviewsContainer,
     SourceSelectorContainer,
     ButtonsContainer,
+    PageContainer,
 } from './index.styled';
 import { ControlButton } from '../../components/inputs/ControlButton/ControlButton';
 
@@ -62,7 +63,7 @@ export default function Index() {
     } = useIndex();
 
     return (
-        <>
+        <PageContainer>
             <MainContainer isRecording={isRecording}>
                 <PreviewsContainer>
                     <ScreenPreview videoSource={videoSource} />
@@ -206,6 +207,6 @@ export default function Index() {
                     />
                 </FormGroup>
             </FileNameContainer>
-        </>
+        </PageContainer>
     );
 }

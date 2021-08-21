@@ -1,5 +1,14 @@
 import { styled } from '@material-ui/core/styles';
 
+export const PageContainer = styled('div')`
+    max-width: 510px;
+    background-color: ${({ theme }) => theme.palette.background.default};
+    color: ${({ theme }) => theme.palette.text.primary};
+    padding: ${({ theme }) => theme.spacing(2) + ' ' + theme.spacing()};
+    height: 100vh;
+    box-sizing: border-box;
+`;
+
 export const MainContainer = styled('div', {
     shouldForwardProp: (prop) => prop != 'isRecording',
 })<{ isRecording: boolean }>`
