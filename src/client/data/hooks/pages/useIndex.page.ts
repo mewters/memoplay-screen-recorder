@@ -86,7 +86,7 @@ export default function useIndex() {
     }
 
     function selectAudioSource(sourceId: string) {
-        if (audioSourceList) {
+        if (audioSourceList && audioSourceList.length) {
             const source = audioSourceList.find(
                 (source) => source.deviceId === sourceId
             );

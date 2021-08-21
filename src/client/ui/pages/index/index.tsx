@@ -100,7 +100,11 @@ export default function Index() {
                     {audioSourceList && audioSourceId && (
                         <Select
                             native
-                            label={'Audio input source'}
+                            label={
+                                audioSourceList.length
+                                    ? 'Audio input source'
+                                    : 'No audio input sources'
+                            }
                             value={audioSourceId}
                             onChange={(event) =>
                                 setAudioSourceId(event.target.value as string)
