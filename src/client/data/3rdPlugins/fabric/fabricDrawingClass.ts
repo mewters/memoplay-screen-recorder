@@ -1,4 +1,5 @@
 import { fabric } from 'fabric';
+import { LocalStorage } from '../../services/StorageService';
 
 export default class FabricDrawingTool {
     toolId: FabricDrawingToolId;
@@ -7,8 +8,8 @@ export default class FabricDrawingTool {
     originalSelectionColor: string;
     originalSelectionBorderColor: string;
 
-    fill = '#FF0000';
-    stroke = '#FF0000';
+    fill = 'transparent';
+    stroke = LocalStorage.get('canvas-fillColor', '#FF0000');
     strokeWidth = 3;
 
     isActive = false;
@@ -60,7 +61,7 @@ export enum FabricDrawingToolId {
     Select,
     Pencil,
     Text,
-    Rectange,
+    Rectangle,
     Circle,
     LineArrow,
 }

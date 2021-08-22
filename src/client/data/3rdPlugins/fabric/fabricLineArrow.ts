@@ -126,7 +126,6 @@ export class Arrow extends FabricDrawingTool {
                 // transparentCorners: false,
                 // borderColor: '#0E98FC',
                 // cornerColor: '#0E98FC',
-                cornerColor: '#FF00FF',
                 objectCaching: false,
                 perPixelTargetFind: true,
                 heads: [1, 0],

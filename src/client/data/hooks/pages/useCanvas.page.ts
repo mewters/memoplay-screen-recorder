@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { fabric } from 'fabric';
 import { useFabricJSEditor } from 'fabricjs-react';
 import { useHotkeys } from 'react-hotkeys-hook';
@@ -6,39 +6,124 @@ import 'fabric-history';
 import FabricCircle from '../../3rdPlugins/fabric/fabricCircle';
 import FabricRectangle from '../../3rdPlugins/fabric/fabricRectangle';
 import FabricArrow from '../../3rdPlugins/fabric/fabricLineArrow';
-
-let _clipboard;
-let isRedoing = false;
-let history = [];
+import FabricText from '../../3rdPlugins/fabric/fabricText';
+import { FabricDrawingToolId } from '../../3rdPlugins/fabric/fabricDrawingClass';
+import useLocalStorage from '../useLocalStorage.hook';
 
 export default function useCanvas() {
     const { editor, onReady } = useFabricJSEditor();
     const [isStarted, setStarted] = useState(false);
-    const [color, setColor] = useState('#ff0000');
+    const [selectedTool, setSelectedTool] = useState(
+        FabricDrawingToolId.Select
+    );
+    const [color, setColor] = useLocalStorage('canvas-fillColor', '#ff0000');
     const [backgroundColor, setBackgroundColor] = useState('#00000000');
+    const RectangleDrawingTool = useRef(null);
+    const ArrowDrawingTool = useRef(null);
+    const CircleDrawingTool = useRef(null);
+    const TextDrawingTool = useRef(null);
+    const Clipboard = useRef(null);
 
     useEffect(() => {
-        console.log('onReady', editor);
-    }, [editor]);
+        if (!isStarted && editor) {
+            setStarted(true);
+            editor.canvas.setWidth(window.screen.width);
+            editor.canvas.setHeight(window.screen.height);
+            editor.canvas.uniformScaling = false;
 
-    const toggleDrawMode = () => {
-        if (editor) {
-            editor.canvas.freeDrawingBrush.color = color;
-            editor.canvas.freeDrawingBrush.width = 5;
-            editor.canvas.isDrawingMode = !editor.canvas.isDrawingMode;
-            window.arrowon = false;
+            RectangleDrawingTool.current = new FabricRectangle(editor.canvas);
+            ArrowDrawingTool.current = new FabricArrow(editor.canvas);
+            CircleDrawingTool.current = new FabricCircle(editor.canvas);
+            TextDrawingTool.current = new FabricText(editor.canvas);
+        }
+    }, [editor, isStarted]);
+
+    const selectTool = (tool: FabricDrawingToolId | null) => {
+        if (tool !== null) {
+            switch (tool) {
+                case FabricDrawingToolId.Select:
+                    startSelectTool();
+                    break;
+                case FabricDrawingToolId.Pencil:
+                    startDrawTool();
+                    break;
+                case FabricDrawingToolId.LineArrow:
+                    startArrowTool();
+                    break;
+                case FabricDrawingToolId.Circle:
+                    startCircleTool();
+                    break;
+                case FabricDrawingToolId.Rectangle:
+                    startRectangleTool();
+                    break;
+            }
+            setSelectedTool(tool);
         }
     };
-    const startArrow = () => {
+
+    const startSelectTool = () => {
         if (editor) {
-            window.arrowon = true;
+            disableAllTools();
         }
+    };
+    const startDrawTool = () => {
+        if (editor) {
+            disableAllTools();
+            editor.canvas.freeDrawingBrush.color = color;
+            editor.canvas.freeDrawingBrush.width = 5;
+            editor.canvas.isDrawingMode = true;
+        }
+    };
+    const startArrowTool = () => {
+        if (editor) {
+            disableAllTools();
+            ArrowDrawingTool.current.isActive = true;
+        }
+    };
+    const startRectangleTool = () => {
+        if (editor) {
+            disableAllTools();
+            RectangleDrawingTool.current.isActive = true;
+        }
+    };
+    const startCircleTool = () => {
+        if (editor) {
+            disableAllTools();
+            CircleDrawingTool.current.isActive = true;
+        }
+    };
+
+    const startTextTool = () => {
+        if (editor) {
+            selectTool(FabricDrawingToolId.Select);
+            TextDrawingTool.current.isActive = true;
+        }
+    };
+    const getAllTools = () => {
+        return [
+            RectangleDrawingTool.current,
+            ArrowDrawingTool.current,
+            CircleDrawingTool.current,
+            TextDrawingTool.current,
+        ];
+    };
+    const disableAllTools = () => {
+        getAllTools().forEach((tool) => {
+            tool.isActive = false;
+        });
+        editor.canvas.isDrawingMode = false;
     };
     const updateColor = (event) => {
         const color = event.target.value;
         setColor(color);
         if (editor) {
             editor.canvas.freeDrawingBrush.color = color;
+            // editor.canvas.freeDrawingBrush.width = 5;
+            getAllTools().forEach((tool) => {
+                tool.stroke = color;
+                tool.fill = 'transparent';
+            });
+            TextDrawingTool.current.fill = color;
         }
     };
     const updateBackgroundColor = (color) => {
@@ -60,13 +145,13 @@ export default function useCanvas() {
     };
     const copy = () => {
         editor?.canvas.getActiveObject()?.clone(function (cloned) {
-            _clipboard = cloned;
+            Clipboard.current = cloned;
         });
     };
     const paste = () => {
         const canvas = editor.canvas;
-        _clipboard &&
-            _clipboard.clone(function (clonedObj) {
+        Clipboard.current &&
+            Clipboard.current.clone(function (clonedObj) {
                 canvas.discardActiveObject();
                 clonedObj.set({
                     left: clonedObj.left + 10,
@@ -84,22 +169,22 @@ export default function useCanvas() {
                 } else {
                     canvas.add(clonedObj);
                 }
-                _clipboard.top += 10;
-                _clipboard.left += 10;
+                Clipboard.current.top += 10;
+                Clipboard.current.left += 10;
                 canvas.setActiveObject(clonedObj);
                 canvas.requestRenderAll();
             });
     };
     const duplicate = () => {
+        const currentClipboard = Clipboard.current;
         copy();
         paste();
+        Clipboard.current = currentClipboard;
     };
     const cut = () => {
         copy();
         deleteObject();
     };
-
-    const saveState = (currentAction) => {};
 
     const undo = () => {
         // if (editor.canvas._objects.length > 0) {
@@ -116,131 +201,54 @@ export default function useCanvas() {
 
         editor?.canvas?.redo();
     };
-    function newTextbox(x, y) {
-        if (typeof x !== 'undefined' && typeof y !== 'undefined') {
-            var newtext = new fabric.IText('', {
-                left: x,
-                top: y,
-                fontFamily: 'sans-serif',
-                fill: '#ff0000',
-                transparentCorners: false,
-                lockRotation: true,
-                // borderColor: '#0E98FC',
-                // cornerColor: '#0E98FC',
-                centeredScaling: false,
-                borderOpacityWhenMoving: 1,
-                hasControls: true,
-                hasRotationPoint: false,
-                lockScalingFlip: true,
-                lockSkewingX: true,
-                lockSkewingY: true,
-                cursorWidth: 1,
-                width: 100,
-                cursorDuration: 1,
-                cursorDelay: 250,
-            });
-        }
-        // newtext.setControlsVisibility({
-        //     bl: true,
-        //     br: true,
-        //     tl: true,
-        //     tr: true,
-        //     mb: false,
-        //     ml: true,
-        //     mr: true,
-        //     mt: false,
-        //     mtr: false,
-        // });
-        editor.canvas.add(newtext).setActiveObject(newtext);
-        editor.canvas.bringToFront(newtext);
-        newtext.enterEditing();
-        editor.canvas.renderAll();
-        newtext.on('editing:exited', (a) => {
-            if (newtext.text.length === 0) {
-                editor?.canvas.remove(newtext);
-            }
-        });
-        // textediting = true;
-    }
-    useEffect(() => {
-        // (function () {
-        //     var $ = function (id) {
-        //         return document.getElementById(id);
-        //     };
-        //     var canvas = (window.__canvas = new fabric.Canvas('c', {
-        //         isDrawingMode: true,
-        //         width: window.screen.width,
-        //         height: window.screen.height,
-        //     }));
-        //     var rect = new fabric.Rect({
-        //         width: 80,
-        //         height: 80,
-        //         left: 100,
-        //         top: 100,
-        //         fill: 'yellow',
-        //         angle: 30,
-        //     });
-        //     canvas.add(rect);
-        //     rect.set('selectable', true);
-        //     canvas.freeDrawingBrush.color = 'rgb(255,255,255)';
-        //     canvas.freeDrawingBrush.width = 5;
-        // })();
-        if (!isStarted && editor) {
-            setStarted(true);
-            editor.canvas.setWidth(window.screen.width);
-            editor.canvas.setHeight(window.screen.height);
-            editor.canvas.uniformScaling = false;
-            window.arrowon = false;
-            // var arrow = new Arrow(editor.canvas);
-            // new Circle(editor.canvas);
-            // new Rectangle(editor.canvas);
-            console.log(editor, fabric);
-            // console.log(arrow);
-            // var rect = new Rectangle(editor.canvas);
 
-            // new FabricCircle(editor.canvas);
-            // new FabricRectangle(editor.canvas);
-            // new FabricArrow(editor.canvas);
-            var a = new FabricArrow(editor.canvas);
-            a.isActive = true;
-
-            // editor.canvas.on('object:added', function () {
-            //     if (!isRedoing) {
-            //         history = [];
-            //     }
-            //     isRedoing = false;
-            // });
-            // editor.canvas.on('object:modified', function () {
-            //     if (!isRedoing) {
-            //         history = [];
-            //     }
-            //     isRedoing = false;
-            // });
-            editor.canvas.on('mouse:down', function (options) {
-                // if (textediting) {
-                //     textediting = false;
-                // } else if (
-                //     texton &&
-                //     options.target == null &&
-                //     !canvas.getActiveObject()
-                // ) {
-                //     newTextbox(options.pointer.x, options.pointer.y);
-                // }
-                // ;;;;;newTextbox(options.pointer.x, options.pointer.y);
-            });
-        }
-    }, [editor, isStarted]);
+    useHotkeys('shift+delete', () => editor?.deleteAll(), [editor]);
 
     useHotkeys('delete', deleteObject, [editor]);
+    useHotkeys('backspace', deleteObject, [editor]);
+
+    useHotkeys('ctrl+c', copy, [editor]);
+    useHotkeys('ctrl+c', copy, [editor]);
+
+    useHotkeys('ctrl+v', paste, [editor]);
+    useHotkeys('command+v', paste, [editor]);
+
+    useHotkeys('ctrl+x', cut, [editor]);
+    useHotkeys('command+x', cut, [editor]);
+
     useHotkeys('ctrl+d', duplicate, [editor]);
+    useHotkeys('command+d', duplicate, [editor]);
+
     useHotkeys('ctrl+z', undo, [editor]);
+    useHotkeys('command+z', undo, [editor]);
+
     useHotkeys('ctrl+y', redo, [editor]);
     useHotkeys('ctrl+shift+z', redo, [editor]);
-    useHotkeys('1', toggleDrawMode, [editor]);
+    useHotkeys('command+shift+z', redo, [editor]);
+
+    useHotkeys('space', () => selectTool(FabricDrawingToolId.Select), [editor]);
+    useHotkeys('0', () => selectTool(FabricDrawingToolId.Select), [editor]);
+
+    useHotkeys('1', () => selectTool(FabricDrawingToolId.Pencil), [editor]);
+
+    useHotkeys('2', () => selectTool(FabricDrawingToolId.LineArrow), [editor]);
+
+    useHotkeys('3', () => selectTool(FabricDrawingToolId.Circle), [editor]);
+
+    useHotkeys('4', () => selectTool(FabricDrawingToolId.Rectangle), [editor]);
+
+    useHotkeys('5', startTextTool, [editor]);
+    useHotkeys('t', startTextTool, [editor]);
 
     return {
-        toggleDrawMode,
-        startArrow,
+        startDrawTool,
+        startArrowTool,
+        startRectangleTool,
+        startCircleTool,
+        startSelectTool,
+        startTextTool,
+        selectTool,
+        selectedTool,
         onReady,
         updateColor,
         updateBackgroundColor,
@@ -253,7 +261,6 @@ export default function useCanvas() {
         paste,
         cut,
         duplicate,
-        newTextbox,
         undo,
         redo,
     };

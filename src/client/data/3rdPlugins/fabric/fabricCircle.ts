@@ -1,98 +1,99 @@
-var Circle = (function () {
-    function Circle(canvas) {
-        this.canvas = canvas;
-        this.className = 'Circle';
-        this.isDrawing = false;
-        this.bindEvents();
+import FabricDrawingTool, { FabricDrawingToolId } from './fabricDrawingClass';
+
+export class Circle extends FabricDrawingTool {
+    origX = 0;
+    origY = 0;
+
+    constructor(canvas) {
+        super(FabricDrawingToolId.Circle, canvas);
     }
 
-    Circle.prototype.bindEvents = function () {
-        var inst = this;
-        inst.canvas.on('mouse:down', function (o) {
-            inst.onMouseDown(o);
-        });
-        inst.canvas.on('mouse:move', function (o) {
-            inst.onMouseMove(o);
-        });
-        inst.canvas.on('mouse:up', function (o) {
-            inst.onMouseUp(o);
-        });
-        inst.canvas.on('object:moving', function (o) {
+    onMouseUp(o) {
+        if (this.isActive && this.mouseMove) {
+            var inst = this;
+            // this.line.set({
+            //     dirty: true,
+            //     objectCaching: true,
+            // });
+            if (inst.isEnable()) {
+                inst.canvas.discardActiveObject().renderAll();
+            }
+            // this.line.hasControls = true;
+            // this.line.hasBorders = true;
+
+            inst.canvas.renderAll();
             inst.disable();
-        });
-    };
-
-    Circle.prototype.onMouseUp = function (o) {
-        var inst = this;
-        inst.disable();
-    };
-
-    Circle.prototype.onMouseMove = function (o) {
-        var inst = this;
-
-        if (!inst.isEnable()) {
-            return;
+            inst.canvas.selectionColor = this.originalSelectionColor;
+            inst.canvas.selectionBorderColor = this.originalSelectionBorderColor;
+        } else if (this.isActive && !this.mouseMove && this.mouseDown) {
+            var inst = this;
+            inst.canvas.remove(inst.canvas.getActiveObject());
         }
+        this.mouseMove = false;
+        this.mouseDown = false;
+    }
+    onMouseMove(o) {
+        if (this.isActive && this.mouseDown) {
+            var inst = this;
+            if (!inst.isEnable()) {
+                return;
+            }
+            if (this.mouseDown) {
+                this.mouseMove = true;
+            }
 
-        var pointer = inst.canvas.getPointer(o.e);
-        var activeObj = inst.canvas.getActiveObject();
+            var pointer = inst.canvas.getPointer(o.e);
+            var activeObj = inst.canvas.getActiveObject();
 
-        // (activeObj.stroke = 'red'), (activeObj.strokeWidth = 5);
-        // activeObj.fill = 'red';
+            if (this.origX > pointer.x) {
+                activeObj.set({ left: Math.abs(pointer.x) });
+            }
 
-        if (this.origX > pointer.x) {
-            activeObj.set({ left: Math.abs(pointer.x) });
+            if (this.origY > pointer.y) {
+                activeObj.set({ top: Math.abs(pointer.y) });
+            }
+
+            activeObj.set({
+                rx: Math.abs(this.origX - pointer.x) / 2,
+            });
+            activeObj.set({
+                ry: Math.abs(this.origY - pointer.y) / 2,
+            });
+            activeObj.setCoords();
+            inst.canvas.renderAll();
         }
+    }
+    onMouseDown(o) {
+        // Check if an arrow can be drawn (not clicking an existing canvas object)
+        if (o.target == null && this.isActive) {
+            this.mouseDown = true;
+            this.mouseMove = false;
 
-        if (this.origY > pointer.y) {
-            activeObj.set({ top: Math.abs(pointer.y) });
+            var inst = this;
+            inst.enable();
+            inst.canvas.selectionColor = 'rgba(0,0,0,0)';
+            inst.canvas.selectionBorderColor = 'rgba(0,0,0,0)';
+
+            var pointer = inst.canvas.getPointer(o.e);
+            this.origX = pointer.x;
+            this.origY = pointer.y;
+
+            var ellipse = new fabric.Ellipse({
+                top: this.origY,
+                left: this.origX,
+                rx: 0,
+                ry: 0,
+                fill: this.fill,
+                stroke: this.stroke,
+                strokeWidth: this.strokeWidth,
+                transparentCorners: false,
+            });
+
+            inst.canvas.add(ellipse).setActiveObject(ellipse);
+        } else {
+            this.mouseDown = false;
         }
-
-        activeObj.set({
-            rx: Math.abs(this.origX - pointer.x) / 2,
-        });
-        activeObj.set({
-            ry: Math.abs(this.origY - pointer.y) / 2,
-        });
-        activeObj.setCoords();
-        inst.canvas.renderAll();
-    };
-
-    Circle.prototype.onMouseDown = function (o) {
-        var inst = this;
-        inst.enable();
-
-        var pointer = inst.canvas.getPointer(o.e);
-        this.origX = pointer.x;
-        this.origY = pointer.y;
-
-        var ellipse = new fabric.Ellipse({
-            top: this.origY,
-            left: this.origX,
-            rx: 0,
-            ry: 0,
-            fill: 'transparent',
-            stroke: 'rgb(255,0,0)',
-            strokeWidth: 5,
-            transparentCorners: false,
-        });
-
-        inst.canvas.add(ellipse).setActiveObject(ellipse);
-    };
-
-    Circle.prototype.isEnable = function () {
-        return this.isDrawing;
-    };
-
-    Circle.prototype.enable = function () {
-        this.isDrawing = true;
-    };
-
-    Circle.prototype.disable = function () {
-        this.isDrawing = false;
-    };
-
-    return Circle;
-})();
+    }
+}
 
 export default Circle;
