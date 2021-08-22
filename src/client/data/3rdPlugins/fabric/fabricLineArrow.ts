@@ -1,8 +1,7 @@
 import { fabric } from 'fabric';
+import FabricDrawingTool, { FabricDrawingToolId } from './fabricDrawingClass';
 
 // Extended fabric line class
-var arrowmousedown = false;
-var arrowmousemove = false;
 fabric.LineArrow = fabric.util.createClass(fabric.Line, {
     type: 'lineArrow',
     initialize: function (element, options) {
@@ -55,37 +54,14 @@ fabric.LineArrow.fromObject = function (object, callback) {
 
 fabric.LineArrow.async = true;
 
-var Arrow = (function () {
-    function Arrow(canvas) {
-        this.canvas = canvas;
-        this.className = 'Arrow';
-        this.isDrawing = false;
-        this.bindEvents();
-        this.originalSelectionColor = canvas.selectionColor;
-        this.originalSelectionBorderColor = canvas.selectionBorderColor;
-        this.color = 'rgb(255,0,0)';
+export class Arrow extends FabricDrawingTool {
+    constructor(canvas) {
+        super(FabricDrawingToolId.LineArrow, canvas);
+        this.line = null;
     }
 
-    // Detect canvas events
-    Arrow.prototype.bindEvents = function () {
-        var inst = this;
-        inst.canvas.on('mouse:down', function (o) {
-            inst.onMouseDown(o);
-        });
-        inst.canvas.on('mouse:move', function (o) {
-            inst.onMouseMove(o);
-        });
-        inst.canvas.on('mouse:up', function (o) {
-            inst.onMouseUp(o);
-        });
-        inst.canvas.on('object:moving', function (o) {
-            inst.disable();
-        });
-    };
-
-    Arrow.prototype.onMouseUp = function (o) {
-        // Check if the user has moved the mouse to prevent accidental arrows
-        if (window.arrowon && arrowmousemove) {
+    onMouseUp(o) {
+        if (this.isActive && this.mouseMove) {
             var inst = this;
             this.line.set({
                 dirty: true,
@@ -96,37 +72,26 @@ var Arrow = (function () {
             }
             this.line.hasControls = true;
             this.line.hasBorders = true;
-            this.line.setControlsVisibility({
-                // bl: true,
-                // br: true,
-                // tl: true,
-                // tr: true,
-                // mb: false,
-                // ml: false,
-                // mr: false,
-                // mt: false,
-                // mtr: true,
-            });
+
             inst.canvas.renderAll();
             inst.disable();
             inst.canvas.selectionColor = this.originalSelectionColor;
             inst.canvas.selectionBorderColor = this.originalSelectionBorderColor;
-        } else if (window.arrowon && !arrowmousemove && arrowmousedown) {
+        } else if (this.isActive && !this.mouseMove && this.mouseDown) {
             var inst = this;
             inst.canvas.remove(inst.canvas.getActiveObject());
         }
-        arrowmousemove = false;
-        arrowmousedown = false;
-    };
-
-    Arrow.prototype.onMouseMove = function (o) {
-        if (window.arrowon && arrowmousedown) {
+        this.mouseMove = false;
+        this.mouseDown = false;
+    }
+    onMouseMove(o) {
+        if (this.isActive && this.mouseDown) {
             var inst = this;
             if (!inst.isEnable()) {
                 return;
             }
-            if (arrowmousedown) {
-                arrowmousemove = true;
+            if (this.mouseDown) {
+                this.mouseMove = true;
             }
             var pointer = inst.canvas.getPointer(o.e);
             var activeObj = inst.canvas.getActiveObject();
@@ -137,13 +102,12 @@ var Arrow = (function () {
             activeObj.setCoords();
             inst.canvas.renderAll();
         }
-    };
-
-    Arrow.prototype.onMouseDown = function (o) {
+    }
+    onMouseDown(o) {
         // Check if an arrow can be drawn (not clicking an existing canvas object)
-        if (o.target == null && window.arrowon) {
-            arrowmousedown = true;
-            arrowmousemove = false;
+        if (o.target == null && this.isActive) {
+            this.mouseDown = true;
+            this.mouseMove = false;
             var inst = this;
             inst.enable();
             inst.canvas.selectionColor = 'rgba(0,0,0,0)';
@@ -162,28 +126,16 @@ var Arrow = (function () {
                 // transparentCorners: false,
                 // borderColor: '#0E98FC',
                 // cornerColor: '#0E98FC',
+                cornerColor: '#FF00FF',
                 objectCaching: false,
                 perPixelTargetFind: true,
                 heads: [1, 0],
             });
             inst.canvas.add(this.line).setActiveObject(this.line);
         } else {
-            arrowmousedown = false;
+            this.mouseDown = false;
         }
-    };
-
-    Arrow.prototype.isEnable = function () {
-        return this.isDrawing;
-    };
-
-    Arrow.prototype.enable = function () {
-        this.isDrawing = true;
-    };
-
-    Arrow.prototype.disable = function () {
-        this.isDrawing = false;
-    };
-    return Arrow;
-})();
+    }
+}
 
 export default Arrow;

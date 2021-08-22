@@ -201,6 +201,8 @@ export default function useCanvas() {
             // new FabricCircle(editor.canvas);
             // new FabricRectangle(editor.canvas);
             // new FabricArrow(editor.canvas);
+            var a = new FabricArrow(editor.canvas);
+            a.isActive = true;
 
             // editor.canvas.on('object:added', function () {
             //     if (!isRedoing) {
