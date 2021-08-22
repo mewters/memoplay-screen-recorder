@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { fabric } from 'fabric';
 import { useFabricJSEditor } from 'fabricjs-react';
 import { useHotkeys } from 'react-hotkeys-hook';
-// import 'fabric-history';
+import 'fabric-history';
 
 let _clipboard;
 let isRedoing = false;
@@ -18,18 +18,6 @@ export default function useCanvas() {
         console.log('onReady', editor);
     }, [editor]);
 
-    const onAddCircle = () => {
-        editor?.addCircle();
-        if (editor) {
-            editor.canvas.isDrawingMode = false;
-        }
-    };
-    const onAddRectangle = () => {
-        editor?.addRectangle();
-        if (editor) {
-            editor.canvas.isDrawingMode = false;
-        }
-    };
     const toggleDrawMode = () => {
         if (editor) {
             editor.canvas.freeDrawingBrush.color = color;
@@ -50,11 +38,11 @@ export default function useCanvas() {
             editor.canvas.freeDrawingBrush.color = color;
         }
     };
-    const updateBackgroundColor = (event) => {
-        const color = event.target.value;
-        setBackgroundColor(color);
+    const updateBackgroundColor = (color) => {
         if (editor) {
-            editor.canvas.backgroundColor = color;
+            const backgroundColor = `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`;
+            setBackgroundColor(backgroundColor);
+            editor.canvas.backgroundColor = backgroundColor;
             editor.canvas.renderAll();
         }
     };
@@ -102,6 +90,10 @@ export default function useCanvas() {
     const duplicate = () => {
         copy();
         paste();
+    };
+    const cut = () => {
+        copy();
+        deleteObject();
     };
 
     const saveState = (currentAction) => {};
@@ -194,6 +186,7 @@ export default function useCanvas() {
             setStarted(true);
             editor.canvas.setWidth(window.screen.width);
             editor.canvas.setHeight(window.screen.height);
+            editor.canvas.uniformScaling = false;
             window.arrowon = false;
             // var arrow = new Arrow(editor.canvas);
             // new Circle(editor.canvas);
@@ -237,8 +230,6 @@ export default function useCanvas() {
     useHotkeys('1', toggleDrawMode, [editor]);
 
     return {
-        onAddCircle,
-        onAddRectangle,
         toggleDrawMode,
         startArrow,
         onReady,
@@ -251,6 +242,7 @@ export default function useCanvas() {
         deleteObject,
         copy,
         paste,
+        cut,
         duplicate,
         newTextbox,
         undo,

@@ -1,14 +1,30 @@
 import React from 'react';
-import { Button } from '@material-ui/core';
 import { FabricJSCanvas } from 'fabricjs-react';
+import { Button } from '@material-ui/core';
+import { ChromePicker } from 'react-color';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    faArrowRight,
+    faCircle,
+    faClone,
+    faCopy,
+    faCut,
+    faEraser,
+    faFont,
+    faMousePointer,
+    faPaste,
+    faPen,
+    faRedo,
+    faSquare,
+    faTrash,
+    faUndo,
+} from '@fortawesome/free-solid-svg-icons';
 
 import { PageContainer, ButtonsContainer } from './canvas.styled';
 import useCanvas from '../../../data/hooks/pages/useCanvas.page';
 
 export default function Canvas() {
     const {
-        onAddCircle,
-        onAddRectangle,
         toggleDrawMode,
         startArrow,
         onReady,
@@ -20,6 +36,7 @@ export default function Canvas() {
         deleteObject,
         copy,
         paste,
+        cut,
         duplicate,
         newTextbox,
         undo,
@@ -29,14 +46,12 @@ export default function Canvas() {
     return (
         <PageContainer>
             <ButtonsContainer>
-                <button onClick={onAddCircle}>Add circle</button>
-                <button onClick={onAddRectangle}>Add Rectangle</button>
                 <Button
                     variant={'contained'}
                     color={'primary'}
                     onClick={toggleDrawMode}
                 >
-                    Toggle Draw
+                    <FontAwesomeIcon icon={faPen} />
                 </Button>
                 <Button
                     variant={'contained'}
@@ -45,45 +60,64 @@ export default function Canvas() {
                 >
                     Arrow
                 </Button>
-                <Button onClick={() => editor?.deleteAll()}>CLEAR</Button>
+                <Button
+                    variant={'contained'}
+                    onClick={() => editor?.deleteAll()}
+                >
+                    <FontAwesomeIcon icon={faTrash} />
+                </Button>
                 <Button
                     variant={'contained'}
                     color={'error'}
                     onClick={deleteObject}
                 >
-                    APAGAR
+                    <FontAwesomeIcon icon={faEraser} />
                 </Button>
                 <input type="color" value={color} onChange={updateColor} />
-                <input
-                    type="color"
-                    value={backgroundColor}
+                <ChromePicker
+                    color={backgroundColor}
                     onChange={updateBackgroundColor}
                 />
+                <Button variant={'contained'} color={'primary'}>
+                    <FontAwesomeIcon icon={faMousePointer} />
+                </Button>
+                <Button variant={'contained'} color={'primary'}>
+                    <FontAwesomeIcon icon={faCircle} />
+                </Button>
+                <Button variant={'contained'} color={'primary'}>
+                    <FontAwesomeIcon icon={faSquare} />
+                </Button>
+                <Button variant={'contained'} color={'primary'}>
+                    <FontAwesomeIcon icon={faArrowRight} />
+                </Button>
                 <Button variant={'contained'} color={'primary'} onClick={copy}>
-                    Copy
+                    <FontAwesomeIcon icon={faCopy} />
                 </Button>
                 <Button variant={'contained'} color={'primary'} onClick={paste}>
-                    Paste
+                    <FontAwesomeIcon icon={faPaste} />
+                </Button>
+                <Button variant={'contained'} color={'primary'} onClick={cut}>
+                    <FontAwesomeIcon icon={faCut} />
                 </Button>
                 <Button
                     variant={'contained'}
                     color={'primary'}
                     onClick={duplicate}
                 >
-                    Duplicate
+                    <FontAwesomeIcon icon={faClone} />
                 </Button>
                 <Button
                     variant={'contained'}
                     color={'primary'}
                     onClick={() => newTextbox(100, 200)}
                 >
-                    Novo Texto
+                    <FontAwesomeIcon icon={faFont} />
                 </Button>
                 <Button variant={'contained'} color={'primary'} onClick={undo}>
-                    Undo
+                    <FontAwesomeIcon icon={faUndo} />
                 </Button>
                 <Button variant={'contained'} color={'primary'} onClick={redo}>
-                    Redo
+                    <FontAwesomeIcon icon={faRedo} />
                 </Button>
             </ButtonsContainer>
             <FabricJSCanvas className="sample-canvas" onReady={onReady} />

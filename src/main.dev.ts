@@ -11,7 +11,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import path from 'path';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, shell, screen } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 // import MenuBuilder from './menu';
@@ -36,9 +36,23 @@ async function createOtherWindow() {
         return path.join(RESOURCES_PATH, ...paths);
     };
 
+    // let displays = screen.getAllDisplays();
+    // let externalDisplay = displays.find((display) => {
+    //     return display.bounds.x !== 0 || display.bounds.y !== 0;
+    // });
+
+    // if (externalDisplay) {
+    //     win = new BrowserWindow({
+    //         x: externalDisplay.bounds.x + 50,
+    //         y: externalDisplay.bounds.y + 50,
+    //     });
+    //     win.loadURL('https://github.com');
+
     let otherWindow: BrowserWindow | null = new BrowserWindow({
         // width: 400,
         // height: 400,
+        // x: externalDisplay.bounds.x + 50,
+        // y: externalDisplay.bounds.y + 50,
         frame: false,
         transparent: true,
         kiosk: true,
@@ -47,6 +61,7 @@ async function createOtherWindow() {
         resizable: false,
         webPreferences: {
             nodeIntegration: true,
+            // devTools: false,
         },
     });
     otherWindow.loadURL(`file://${__dirname}/index.html?page=canvas`);
