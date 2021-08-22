@@ -56,9 +56,9 @@ async function createOtherWindow() {
         frame: false,
         transparent: true,
         kiosk: true,
-        alwaysOnTop: true,
+        // alwaysOnTop: true,
         thickFrame: false,
-        resizable: false,
+        // resizable: false,
         webPreferences: {
             nodeIntegration: true,
             // devTools: false,
