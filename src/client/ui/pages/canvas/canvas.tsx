@@ -21,6 +21,9 @@ export default function Canvas() {
         copy,
         paste,
         duplicate,
+        newTextbox,
+        undo,
+        redo,
     } = useCanvas();
 
     return (
@@ -68,6 +71,19 @@ export default function Canvas() {
                     onClick={duplicate}
                 >
                     Duplicate
+                </Button>
+                <Button
+                    variant={'contained'}
+                    color={'primary'}
+                    onClick={() => newTextbox(100, 200)}
+                >
+                    Novo Texto
+                </Button>
+                <Button variant={'contained'} color={'primary'} onClick={undo}>
+                    Undo
+                </Button>
+                <Button variant={'contained'} color={'primary'} onClick={redo}>
+                    Redo
                 </Button>
             </ButtonsContainer>
             <FabricJSCanvas className="sample-canvas" onReady={onReady} />

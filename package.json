@@ -242,6 +242,7 @@
         "electron-log": "^4.2.4",
         "electron-updater": "^4.3.4",
         "fabric": "^4.5.1",
+        "fabric-history": "^1.6.0",
         "fabricjs-react": "^1.0.8",
         "fix-webm-duration": "^1.0.0",
         "history": "^5.0.0",
