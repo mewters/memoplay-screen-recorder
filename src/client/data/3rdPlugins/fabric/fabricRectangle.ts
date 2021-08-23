@@ -11,15 +11,15 @@ export class Rectangle extends FabricDrawingTool {
     onMouseUp(o) {
         if (this.isActive && this.mouseMove) {
             var inst = this;
-            // this.line.set({
-            //     dirty: true,
-            //     objectCaching: true,
-            // });
+            this.newObject.set({
+                dirty: true,
+                objectCaching: true,
+            });
             if (inst.isEnable()) {
                 inst.canvas.discardActiveObject().renderAll();
             }
-            // this.line.hasControls = true;
-            // this.line.hasBorders = true;
+            this.newObject.hasControls = true;
+            this.newObject.hasBorders = true;
 
             inst.canvas.renderAll();
             inst.disable();
@@ -74,11 +74,13 @@ export class Rectangle extends FabricDrawingTool {
             this.origX = pointer.x;
             this.origY = pointer.y;
 
-            var rect = new fabric.Rect({
+            this.newObject = new fabric.Rect({
                 top: this.origY,
                 left: this.origX,
                 originX: 'left',
                 originY: 'top',
+                hasBorders: false,
+                hasControls: false,
                 width: pointer.x - this.origX,
                 height: pointer.y - this.origY,
                 angle: 0,
@@ -88,7 +90,7 @@ export class Rectangle extends FabricDrawingTool {
                 transparentCorners: false,
             });
 
-            inst.canvas.add(rect).setActiveObject(rect);
+            inst.canvas.add(this.newObject).setActiveObject(this.newObject);
         } else {
             this.mouseDown = false;
         }

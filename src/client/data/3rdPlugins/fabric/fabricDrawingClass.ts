@@ -12,10 +12,12 @@ export default class FabricDrawingTool {
     stroke = LocalStorage.get('canvas-fillColor', '#FF0000');
     strokeWidth = 3;
 
-    isActive = false;
+    _isActive = false;
     isDrawing = false;
     mouseDown = false;
     mouseMove = false;
+
+    newObject = null;
 
     constructor(toolId: FabricDrawingToolId, canvas: typeof fabric.Canvas) {
         this.toolId = toolId;
@@ -24,6 +26,15 @@ export default class FabricDrawingTool {
         this.originalSelectionBorderColor = canvas.selectionBorderColor;
 
         this.bindEvents();
+    }
+
+    get isActive() {
+        return this._isActive;
+    }
+
+    set isActive(value) {
+        this._isActive = value;
+        this.canvas.defaultCursor = value ? 'crosshair' : 'default';
     }
 
     bindEvents() {

@@ -57,21 +57,20 @@ fabric.LineArrow.async = true;
 export class Arrow extends FabricDrawingTool {
     constructor(canvas) {
         super(FabricDrawingToolId.LineArrow, canvas);
-        this.line = null;
     }
 
     onMouseUp(o) {
         if (this.isActive && this.mouseMove) {
             var inst = this;
-            this.line.set({
+            this.newObject.set({
                 dirty: true,
                 objectCaching: true,
             });
             if (inst.isEnable()) {
                 inst.canvas.discardActiveObject().renderAll();
             }
-            this.line.hasControls = true;
-            this.line.hasBorders = true;
+            this.newObject.hasControls = true;
+            this.newObject.hasBorders = true;
 
             inst.canvas.renderAll();
             inst.disable();
@@ -114,7 +113,7 @@ export class Arrow extends FabricDrawingTool {
             inst.canvas.selectionBorderColor = 'rgba(0,0,0,0)';
             var pointer = inst.canvas.getPointer(o.e);
             var points = [pointer.x, pointer.y, pointer.x, pointer.y];
-            this.line = new fabric.LineArrow(points, {
+            this.newObject = new fabric.LineArrow(points, {
                 strokeWidth: 3,
                 fill: inst.canvas.freeDrawingBrush.color,
                 stroke: inst.canvas.freeDrawingBrush.color,
@@ -130,7 +129,7 @@ export class Arrow extends FabricDrawingTool {
                 perPixelTargetFind: true,
                 heads: [1, 0],
             });
-            inst.canvas.add(this.line).setActiveObject(this.line);
+            inst.canvas.add(this.newObject).setActiveObject(this.newObject);
         } else {
             this.mouseDown = false;
         }

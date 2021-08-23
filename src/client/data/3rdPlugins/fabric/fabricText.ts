@@ -11,34 +11,19 @@ export class Text extends FabricDrawingTool {
         this.fill = LocalStorage.get('canvas-fillColor', '#FF0000');
     }
 
+    get isActive() {
+        return this._isActive;
+    }
+
+    set isActive(value) {
+        this._isActive = value;
+        this.canvas.defaultCursor = value ? 'text' : 'default';
+    }
+
     bindEvents() {
         super.bindEvents();
     }
 
-    onMouseUp(o) {
-        // if (this.isActive && this.mouseMove) {
-        //     var inst = this;
-        //     // this.line.set({
-        //     //     dirty: true,
-        //     //     objectCaching: true,
-        //     // });
-        //     if (inst.isEnable()) {
-        //         inst.canvas.discardActiveObject().renderAll();
-        //     }
-        //     // this.line.hasControls = true;
-        //     // this.line.hasBorders = true;
-        //     inst.canvas.renderAll();
-        //     inst.disable();
-        //     inst.canvas.selectionColor = this.originalSelectionColor;
-        //     inst.canvas.selectionBorderColor = this.originalSelectionBorderColor;
-        // } else if (this.isActive && !this.mouseMove && this.mouseDown) {
-        //     var inst = this;
-        //     inst.canvas.remove(inst.canvas.getActiveObject());
-        // }
-        // this.mouseMove = false;
-        // this.mouseDown = false;
-    }
-    onMouseMove(o) {}
     onMouseDown(options) {
         if (
             this.isActive &&

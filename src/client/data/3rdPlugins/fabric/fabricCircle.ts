@@ -11,15 +11,15 @@ export class Circle extends FabricDrawingTool {
     onMouseUp(o) {
         if (this.isActive && this.mouseMove) {
             var inst = this;
-            // this.line.set({
-            //     dirty: true,
-            //     objectCaching: true,
-            // });
+            this.newObject.set({
+                dirty: true,
+                objectCaching: true,
+            });
             if (inst.isEnable()) {
                 inst.canvas.discardActiveObject().renderAll();
             }
-            // this.line.hasControls = true;
-            // this.line.hasBorders = true;
+            this.newObject.hasControls = true;
+            this.newObject.hasBorders = true;
 
             inst.canvas.renderAll();
             inst.disable();
@@ -78,7 +78,7 @@ export class Circle extends FabricDrawingTool {
             this.origX = pointer.x;
             this.origY = pointer.y;
 
-            var ellipse = new fabric.Ellipse({
+            this.newObject = new fabric.Ellipse({
                 top: this.origY,
                 left: this.origX,
                 rx: 0,
@@ -87,9 +87,11 @@ export class Circle extends FabricDrawingTool {
                 stroke: this.stroke,
                 strokeWidth: this.strokeWidth,
                 transparentCorners: false,
+                hasBorders: false,
+                hasControls: false,
             });
 
-            inst.canvas.add(ellipse).setActiveObject(ellipse);
+            inst.canvas.add(this.newObject).setActiveObject(this.newObject);
         } else {
             this.mouseDown = false;
         }

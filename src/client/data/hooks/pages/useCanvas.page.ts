@@ -56,6 +56,9 @@ export default function useCanvas() {
                 case FabricDrawingToolId.Rectangle:
                     startRectangleTool();
                     break;
+                case FabricDrawingToolId.Text:
+                    startTextTool();
+                    break;
             }
             setSelectedTool(tool);
         }
@@ -143,6 +146,11 @@ export default function useCanvas() {
             }
         }
     };
+    const clearAll = () => {
+        if (editor) {
+            editor.deleteAll();
+        }
+    };
     const copy = () => {
         editor?.canvas.getActiveObject()?.clone(function (cloned) {
             Clipboard.current = cloned;
@@ -202,7 +210,7 @@ export default function useCanvas() {
         editor?.canvas?.redo();
     };
 
-    useHotkeys('shift+delete', () => editor?.deleteAll(), [editor]);
+    useHotkeys('shift+delete', clearAll, [editor]);
 
     useHotkeys('delete', deleteObject, [editor]);
     useHotkeys('backspace', deleteObject, [editor]);
@@ -257,6 +265,7 @@ export default function useCanvas() {
         editor,
         fabric,
         deleteObject,
+        clearAll,
         copy,
         paste,
         cut,
