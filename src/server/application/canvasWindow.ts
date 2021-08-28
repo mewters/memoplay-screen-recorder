@@ -12,7 +12,6 @@ let isCanvasWindowHidden = false;
 // }
 
 export function toggleCanvasWindow() {
-    console.log(151561, canvasWindow);
     if (canvasWindow) {
         if (isCanvasWindowHidden) {
             canvasWindow.show();

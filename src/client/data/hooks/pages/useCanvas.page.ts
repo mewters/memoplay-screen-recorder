@@ -217,7 +217,7 @@ export default function useCanvas() {
     useHotkeys('backspace', deleteObject, [editor]);
 
     useHotkeys('ctrl+c', copy, [editor]);
-    useHotkeys('ctrl+c', copy, [editor]);
+    useHotkeys('command+c', copy, [editor]);
 
     useHotkeys('ctrl+v', paste, [editor]);
     useHotkeys('command+v', paste, [editor]);
