@@ -4,7 +4,7 @@ import { styled } from '@material-ui/core/styles';
 export const PageContainer = styled('div')`
     canvas {
         position: relative;
-        border: 5px solid rgba(0, 0, 255, 0.5);
+        /* border: 5px solid rgba(0, 0, 255, 0.5); */
         box-sizing: border-box;
     }
 `;
@@ -15,6 +15,7 @@ export const ButtonsContainer = styled('div')`
     left: 0;
     right: 0;
     z-index: 5;
+    width: max-content;
 `;
 
 export const ButtonGroupStyled = styled(ToggleButtonGroup)`

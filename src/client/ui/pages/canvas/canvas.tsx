@@ -2,6 +2,9 @@ import React from 'react';
 import { FabricJSCanvas } from 'fabricjs-react';
 import {
     Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
     Divider,
     ListItemIcon,
     ListItemText,
@@ -18,6 +21,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faArrowRight,
     faCircle,
+    faCog,
     faFont,
     faMousePointer,
     faPen,
@@ -49,23 +53,27 @@ export default function Canvas() {
         color,
         backgroundColor,
         updateBackgroundColor,
+        isDialogOpen,
+        setDialogOpen,
     } = useCanvas();
 
     const [contextMenu, setContextMenu] = React.useState(null);
 
     const handleContextMenu = (event) => {
         event.preventDefault();
-        setContextMenu(
-            contextMenu === null
-                ? {
-                      mouseX: event.clientX - 2,
-                      mouseY: event.clientY - 4,
-                  }
-                : // repeated contextmenu when it is already open closes it with Chrome 84 on Ubuntu
-                  // Other native context menus might behave different.
-                  // With this behavior we prevent contextmenu from the backdrop to re-locale existing context menus.
-                  null
-        );
+        if (!isDialogOpen) {
+            setContextMenu(
+                contextMenu === null
+                    ? {
+                          mouseX: event.clientX - 2,
+                          mouseY: event.clientY - 4,
+                      }
+                    : // repeated contextmenu when it is already open closes it with Chrome 84 on Ubuntu
+                      // Other native context menus might behave different.
+                      // With this behavior we prevent contextmenu from the backdrop to re-locale existing context menus.
+                      null
+            );
+        }
     };
 
     const handleClose = () => {
@@ -75,13 +83,30 @@ export default function Canvas() {
     return (
         <PageContainer onContextMenu={handleContextMenu}>
             <ButtonsContainer>
-                <input type="color" value={color} onChange={updateColor} />
                 {/* <Popover open={true}>
-                    <ChromePicker
-                        color={backgroundColor}
-                        onChange={updateBackgroundColor}
-                    />
                 </Popover> */}
+
+                <Dialog
+                    open={isDialogOpen}
+                    hideBackdrop
+                    onClose={() => setDialogOpen(false)}
+                >
+                    <DialogContent>
+                        <input
+                            type="color"
+                            value={color}
+                            onChange={updateColor}
+                        />
+
+                        <ChromePicker
+                            color={backgroundColor}
+                            onChange={updateBackgroundColor}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        {/* <Button variant={'contained'}>Close</Button> */}
+                    </DialogActions>
+                </Dialog>
 
                 <>
                     <Menu
@@ -178,6 +203,14 @@ export default function Canvas() {
                             <Typography variant="body2">
                                 Shift + Delete
                             </Typography>
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem onClick={() => setDialogOpen(true)}>
+                            <ListItemIcon>
+                                <FontAwesomeIcon icon={faCog} fixedWidth />
+                            </ListItemIcon>
+                            <ListItemText>Configurations</ListItemText>
+                            <Typography variant="body2"></Typography>
                         </MenuItem>
                     </Menu>
                 </>

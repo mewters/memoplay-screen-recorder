@@ -13,6 +13,7 @@ import useLocalStorage from '../useLocalStorage.hook';
 export default function useCanvas() {
     const { editor, onReady } = useFabricJSEditor();
     const [isStarted, setStarted] = useState(false);
+    const [isDialogOpen, setDialogOpen] = useState(false);
     const [selectedTool, setSelectedTool] = useState(
         FabricDrawingToolId.Select
     );
@@ -272,5 +273,7 @@ export default function useCanvas() {
         duplicate,
         undo,
         redo,
+        isDialogOpen,
+        setDialogOpen,
     };
 }
