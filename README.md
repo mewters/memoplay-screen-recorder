@@ -1,4 +1,7 @@
+⚠️ this is the v.01 of the project. To go to the new version, [Click Here](https://github.com/mewters/memoplay-screen-recorder)
+
 # MemoPlay Screen Recorder
+
 メモプレイ
 
 Simple Screen Recorder made with Electron.
@@ -7,25 +10,26 @@ Simple Screen Recorder made with Electron.
 
 <img src="./img/memoplay-screen-recording.png" width="500" alt="MemoPlay Screen - Recording">
 
-## Instalation	
+## Instalation
 
-### NPM	
-> $ npm i -g memoplay-screen-recorder	
+### NPM
 
-To start MemoPlay execute:	
+> $ npm i -g memoplay-screen-recorder
 
-> $ memoplay	
+To start MemoPlay execute:
 
+> $ memoplay
 
 ## Hotkeys
-| Function | Windows / Linux | Mac |
-| ------ | ------ |  ------ | 
-| Start Recording | F9  | Cmd+Shift+2 |
-| Pause/Resume Recording | F9  | Cmd+Shift+2 |
-| Stop Recording | F10  | Cmd+Option+2 |
+
+| Function               | Windows / Linux | Mac          |
+| ---------------------- | --------------- | ------------ |
+| Start Recording        | F9              | Cmd+Shift+2  |
+| Pause/Resume Recording | F9              | Cmd+Shift+2  |
+| Stop Recording         | F10             | Cmd+Option+2 |
 
 ## Supported File Formats
 
-- .webm (default)
-- .mp4
-- .avi
+-   .webm (default)
+-   .mp4
+-   .avi
