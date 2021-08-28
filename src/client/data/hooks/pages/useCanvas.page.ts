@@ -14,8 +14,13 @@ export default function useCanvas() {
     const { editor, onReady } = useFabricJSEditor();
     const [isStarted, setStarted] = useState(false);
     const [isDialogOpen, setDialogOpen] = useState(false);
+    const [currentDialogTab, setCurrentDialogTab] = useState(0);
     const [selectedTool, setSelectedTool] = useState(
         FabricDrawingToolId.Select
+    );
+    const [strokeWidth, setStrokeWidth] = useLocalStorage(
+        'canvas-strokeWidth',
+        3
     );
     const [color, setColor] = useLocalStorage('canvas-fillColor', '#ff0000');
     const [backgroundColor, setBackgroundColor] = useState('#00000000');
@@ -74,7 +79,7 @@ export default function useCanvas() {
         if (editor) {
             disableAllTools();
             editor.canvas.freeDrawingBrush.color = color;
-            editor.canvas.freeDrawingBrush.width = 5;
+            editor.canvas.freeDrawingBrush.width = strokeWidth;
             editor.canvas.isDrawingMode = true;
         }
     };
@@ -117,17 +122,28 @@ export default function useCanvas() {
         });
         editor.canvas.isDrawingMode = false;
     };
-    const updateColor = (event) => {
-        const color = event.target.value;
-        setColor(color);
+    const updateStrokeWidth = (event: Event, newValue: number | number[]) => {
         if (editor) {
-            editor.canvas.freeDrawingBrush.color = color;
+            setStrokeWidth(newValue as number);
+            editor.canvas.freeDrawingBrush.width = newValue as number;
+            getAllTools().forEach((tool) => {
+                tool.strokeWidth = newValue;
+            });
+            TextDrawingTool.current.strokeWidth = 1;
+        }
+    };
+    const updateColor = (color) => {
+        if (editor) {
+            const newColor = `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`;
+            setColor(newColor);
+
+            editor.canvas.freeDrawingBrush.color = newColor;
             // editor.canvas.freeDrawingBrush.width = 5;
             getAllTools().forEach((tool) => {
-                tool.stroke = color;
+                tool.stroke = newColor;
                 tool.fill = 'transparent';
             });
-            TextDrawingTool.current.fill = color;
+            TextDrawingTool.current.fill = newColor;
         }
     };
     const updateBackgroundColor = (color) => {
@@ -259,6 +275,8 @@ export default function useCanvas() {
         selectTool,
         selectedTool,
         onReady,
+        strokeWidth,
+        updateStrokeWidth,
         updateColor,
         updateBackgroundColor,
         color,
@@ -275,5 +293,7 @@ export default function useCanvas() {
         redo,
         isDialogOpen,
         setDialogOpen,
+        currentDialogTab,
+        setCurrentDialogTab,
     };
 }

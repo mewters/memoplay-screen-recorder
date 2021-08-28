@@ -1,5 +1,6 @@
-import { ToggleButtonGroup } from '@material-ui/core';
+import { Tabs, ToggleButtonGroup } from '@material-ui/core';
 import { styled } from '@material-ui/core/styles';
+import { Theme } from '@material-ui/system';
 
 export const PageContainer = styled('div')`
     canvas {
@@ -32,3 +33,54 @@ export const ButtonGroupStyled = styled(ToggleButtonGroup)`
         }
     }
 `;
+
+export const DialogTabs = styled(Tabs)`
+    .MuiButtonBase-root,
+    .MuiButtonBase-root.Mui-selected,
+    .MuiSlider-sizeMedium.MuiSlider-root {
+        color: white;
+    }
+
+    .MuiTabs-indicator {
+        background-color: white;
+    }
+`;
+
+export const BrushPreview = styled('div')<{
+    strokeWidth: number;
+    color: string;
+}>`
+    position: relative;
+    text-align: center;
+    background-color: ${handleBrushPreviewBackground};
+    padding: ${({ theme }) => theme.spacing()};
+    border-radius: ${({ theme }) => theme.shape.borderRadius};
+    transition: all 0.2s ease-in-out;
+
+    &::after {
+        content: '';
+        display: inline-block;
+        width: ${({ strokeWidth }) => strokeWidth}px;
+        height: ${({ strokeWidth }) => strokeWidth}px;
+        background-color: ${({ color }) => color};
+        border-radius: 100%;
+        transition: all 0.2s ease-in-out;
+    }
+`;
+
+function handleBrushPreviewBackground(props: { theme: Theme; color: string }) {
+    return isDark(props.color) ? 'white' : props.theme.palette.background.paper;
+}
+
+function isDark(color: string) {
+    const rgb = color.match(
+        /^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i
+    );
+    return (
+        rgb &&
+        rgb.length === 4 &&
+        (parseInt(rgb[1], 10) + parseInt(rgb[2], 10) + parseInt(rgb[3], 10)) /
+            3 <
+            128
+    );
+}

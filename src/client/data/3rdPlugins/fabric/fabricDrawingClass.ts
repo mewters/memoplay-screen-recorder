@@ -10,7 +10,7 @@ export default class FabricDrawingTool {
 
     fill = 'transparent';
     stroke = LocalStorage.get('canvas-fillColor', '#FF0000');
-    strokeWidth = 3;
+    strokeWidth = LocalStorage.get('canvas-strokeWidth', 3);
 
     _isActive = false;
     isDrawing = false;

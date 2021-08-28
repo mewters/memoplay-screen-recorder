@@ -1,6 +1,7 @@
 import React from 'react';
 import { FabricJSCanvas } from 'fabricjs-react';
 import {
+    Box,
     Button,
     Dialog,
     DialogActions,
@@ -12,6 +13,9 @@ import {
     MenuItem,
     MenuList,
     Paper,
+    Slider,
+    Tab,
+    Tabs,
     ToggleButton,
     ToggleButtonGroup,
     Typography,
@@ -33,6 +37,8 @@ import {
     PageContainer,
     ButtonsContainer,
     ButtonGroupStyled,
+    DialogTabs,
+    BrushPreview,
 } from './canvas.styled';
 import useCanvas from '../../../data/hooks/pages/useCanvas.page';
 import { FabricDrawingToolId } from '../../../data/3rdPlugins/fabric/fabricDrawingClass';
@@ -49,12 +55,16 @@ export default function Canvas() {
         selectTool,
         selectedTool,
         onReady,
+        strokeWidth,
+        updateStrokeWidth,
         updateColor,
         color,
         backgroundColor,
         updateBackgroundColor,
         isDialogOpen,
         setDialogOpen,
+        currentDialogTab,
+        setCurrentDialogTab,
     } = useCanvas();
 
     const [contextMenu, setContextMenu] = React.useState(null);
@@ -83,29 +93,53 @@ export default function Canvas() {
     return (
         <PageContainer onContextMenu={handleContextMenu}>
             <ButtonsContainer>
-                {/* <Popover open={true}>
-                </Popover> */}
-
                 <Dialog
                     open={isDialogOpen}
                     hideBackdrop
                     onClose={() => setDialogOpen(false)}
                 >
                     <DialogContent>
-                        <input
-                            type="color"
-                            value={color}
-                            onChange={updateColor}
-                        />
+                        <Box
+                            sx={{
+                                borderBottom: 1,
+                                borderColor: 'divider',
+                                mb: 2,
+                            }}
+                        >
+                            <DialogTabs
+                                value={currentDialogTab}
+                                onChange={(_event, newValue) =>
+                                    setCurrentDialogTab(newValue)
+                                }
+                            >
+                                <Tab label="Stroke" />
+                                <Tab label="Background" />
+                            </DialogTabs>
+                        </Box>
+                        <div hidden={currentDialogTab !== 0}>
+                            <BrushPreview
+                                strokeWidth={strokeWidth}
+                                color={color}
+                            />
+                            <Slider
+                                value={strokeWidth}
+                                onChange={updateStrokeWidth}
+                                min={2}
+                                max={30}
+                            />
 
-                        <ChromePicker
-                            color={backgroundColor}
-                            onChange={updateBackgroundColor}
-                        />
+                            <ChromePicker
+                                color={color}
+                                onChange={updateColor}
+                            />
+                        </div>
+                        <div hidden={currentDialogTab !== 1}>
+                            <ChromePicker
+                                color={backgroundColor}
+                                onChange={updateBackgroundColor}
+                            />
+                        </div>
                     </DialogContent>
-                    <DialogActions>
-                        {/* <Button variant={'contained'}>Close</Button> */}
-                    </DialogActions>
                 </Dialog>
 
                 <>

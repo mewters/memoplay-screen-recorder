@@ -114,7 +114,7 @@ export class Arrow extends FabricDrawingTool {
             var pointer = inst.canvas.getPointer(o.e);
             var points = [pointer.x, pointer.y, pointer.x, pointer.y];
             this.newObject = new fabric.LineArrow(points, {
-                strokeWidth: 3,
+                strokeWidth: inst.strokeWidth,
                 fill: inst.canvas.freeDrawingBrush.color,
                 stroke: inst.canvas.freeDrawingBrush.color,
                 originX: 'center',
