@@ -19,7 +19,7 @@ import log from 'electron-log';
 import { Tray } from './server/application/tray';
 import './server/application/events';
 import { Shortcuts } from './server/application/shortcuts';
-import { toggleCanvasWindow } from './server/application/canvasWindow';
+import { quitCanvasWindow } from './server/application/canvasWindow';
 
 export default class AppUpdater {
     constructor() {
@@ -73,6 +73,7 @@ const createWindow = async () => {
     };
 
     mainWindow = new BrowserWindow({
+        title: 'MemoPlay Screen Recorder',
         show: false,
         width: 510,
         height: 240,
@@ -104,6 +105,7 @@ const createWindow = async () => {
     mainWindow.on('closed', () => {
         Shortcuts.unsetShortcuts();
         mainWindow = null;
+        quitCanvasWindow();
     });
 
     // const menuBuilder = new MenuBuilder(mainWindow);

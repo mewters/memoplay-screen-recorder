@@ -28,6 +28,14 @@ export function toggleCanvasWindow() {
     }
 }
 
+export function quitCanvasWindow() {
+    if (canvasWindow) {
+        canvasWindow.close();
+        canvasWindow.destroy();
+        canvasWindow = null;
+    }
+}
+
 export async function createcanvasWindow() {
     // let displays = screen.getAllDisplays();
     // let externalDisplay = displays.find((display) => {
@@ -46,18 +54,24 @@ export async function createcanvasWindow() {
         // height: 400,
         // x: externalDisplay.bounds.x + 50,
         // y: externalDisplay.bounds.y + 50,
+        title: 'MemoPlay Canvas',
         frame: false,
         transparent: true,
         kiosk: true,
         alwaysOnTop: true,
         thickFrame: false,
         resizable: false,
+        closable: false,
         webPreferences: {
             nodeIntegration: true,
-            // devTools: false,
+            devTools: false,
         },
     });
-    canvasWindow.loadURL(`file://${__dirname}/../../index.html?page=canvas`);
+    const fileURL =
+        process.env.NODE_ENV === 'development'
+            ? `file://${__dirname}/../../index.html?page=canvas`
+            : `file://${__dirname}/index.html?page=canvas`;
+    canvasWindow.loadURL(fileURL);
     // canvasWindow.setIgnoreMouseEvents(true);
 
     // @TODO: Use 'ready-to-show' event
