@@ -9,6 +9,20 @@ A Free Simple Screen Recorder with annotation tools. Made with Electron.
 <img src="./assets/prints/annotation-tool-02.png" width="500" alt="MemoPlay Screen - Recording">
 
 ---
+## Table of contents
+- [Download](#download)
+- [Features](#features)
+- [Supported File Formats](#supported-file-formats)
+- [Hotkeys and commands](#hotkeys-and-commands)
+
+---
+
+## Download
+
+- [Windows](https://github.com/mewters/memoplay-screen-recorder/releases/download/untagged-885f14d6337fb284a106/MemoPlay.Setup.2.0.0.exe)
+
+
+---
 
 ## Features
 
@@ -36,7 +50,7 @@ A Free Simple Screen Recorder with annotation tools. Made with Electron.
 
 ---
 
-## Hotkeys & commands
+## Hotkeys and Commands
 
 | Function                   | Windows / Linux | Mac          |
 | -------------------------- | --------------- | ------------ |
