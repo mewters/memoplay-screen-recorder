@@ -41,6 +41,9 @@ export default function Index() {
         isRecording,
         isRecordingPaused,
         folder,
+        fileTypeList,
+        fileType,
+        setFileType,
         fileName,
         setFileName,
         hasTime,
@@ -193,6 +196,20 @@ export default function Index() {
                     value={fileName}
                     onChange={(event) => setFileName(event.target.value)}
                 />
+                <Select
+                    native
+                    label={'File Type'}
+                    value={fileType}
+                    onChange={(event) =>
+                        setFileType(event.target.value as string)
+                    }
+                >
+                    {fileTypeList.map((fileType) => (
+                        <option value={fileType.value} key={fileType.value}>
+                            {fileType.label}
+                        </option>
+                    ))}
+                </Select>
                 <FormGroup>
                     <FormControlLabel
                         control={

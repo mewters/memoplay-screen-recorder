@@ -75,7 +75,7 @@ const createWindow = async () => {
     mainWindow = new BrowserWindow({
         title: 'MemoPlay Screen Recorder',
         show: false,
-        width: 510,
+        width: 600,
         height: 240,
         resizable: !app.isPackaged,
         icon: getAssetPath('icon.png'),

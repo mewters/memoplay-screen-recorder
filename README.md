@@ -9,18 +9,19 @@ A Free Simple Screen Recorder with annotation tools. Made with Electron.
 <img src="./assets/prints/annotation-tool-02.png" width="500" alt="MemoPlay Screen - Recording">
 
 ---
+
 ## Table of contents
-- [Download](#download)
-- [Features](#features)
-- [Supported File Formats](#supported-file-formats)
-- [Hotkeys and commands](#hotkeys-and-commands)
+
+-   [Download](#download)
+-   [Features](#features)
+-   [Supported File Formats](#supported-file-formats)
+-   [Hotkeys and commands](#hotkeys-and-commands)
 
 ---
 
 ## Download
 
-- [Windows](https://github.com/mewters/memoplay-screen-recorder/releases/download/v2.0.0-beta-01/MemoPlay.Setup.2.0.0.exe)
-
+-   [Windows](https://github.com/mewters/memoplay-screen-recorder/releases/download/v2.0.0-beta-01/MemoPlay.Setup.2.0.0.exe)
 
 ---
 
@@ -45,7 +46,7 @@ A Free Simple Screen Recorder with annotation tools. Made with Electron.
 ## Supported File Formats
 
 -   .webm (no video length bug 😁)
--   .mp4 (soon)
+-   .mp4
 -   .avi (soon)
 
 ---

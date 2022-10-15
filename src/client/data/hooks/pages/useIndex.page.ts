@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ipcRenderer } from 'electron';
 import { FileService } from '../../services/FileService';
 import { RecorderService } from '../../services/RecorderService';
 import { UserMediaService } from '../../services/UserMediaService';
 import useLocalStorage from '../useLocalStorage.hook';
 import useTimeCounter from '../useTimeCounter.hook';
+import { LocalStorage } from '../../services/StorageService';
 
 export default function useIndex() {
     const [isRecording, setIsRecording] = useState(false),
         [isRecordingPaused, setIsRecordingPaused] = useState(false),
         [folder, setFolder] = useLocalStorage('folderName', ''),
         [fileName, setFileName] = useState(''),
+        [fileType, setFileType] = useLocalStorage('fileType', 'webm'),
         [hasTime, setHasTime] = useLocalStorage('hasTimeOnFileName', true),
         [audioSourceId, setAudioSourceId] = useLocalStorage(
             'audioSourceId',
@@ -29,6 +31,19 @@ export default function useIndex() {
             windowSources: Electron.DesktopCapturerSource[];
             screenSources: Electron.DesktopCapturerSource[];
         } | null>(null),
+        fileTypeList = useMemo(
+            () => [
+                {
+                    label: 'WebM',
+                    value: 'webm',
+                },
+                {
+                    label: 'MP4',
+                    value: 'mp4',
+                },
+            ],
+            []
+        ),
         {
             totalTime,
             startTimer,
@@ -133,9 +148,10 @@ export default function useIndex() {
         if (isRecording) {
             stopTimer(async (totalTime) => {
                 const buffer = await RecorderService.stop(totalTime * 1000),
+                    fileType = LocalStorage.get('fileType', 'webm'),
                     fullFileName = `${fileName}${
                         hasTime ? Date.now().toString() : ''
-                    }.webm`;
+                    }.${fileType}`;
 
                 await FileService.saveVideo(buffer, folder, fullFileName);
                 setIsRecording(false);
@@ -178,6 +194,9 @@ export default function useIndex() {
         isRecording,
         isRecordingPaused,
         folder,
+        fileTypeList,
+        fileType,
+        setFileType,
         fileName,
         setFileName,
         hasTime,

@@ -1,7 +1,7 @@
 import { styled } from '@material-ui/core/styles';
 
 export const PageContainer = styled('div')`
-    max-width: 510px;
+    max-width: 600px;
     background-color: ${({ theme }) => theme.palette.background.default};
     color: ${({ theme }) => theme.palette.text.primary};
     padding: ${({ theme }) => theme.spacing(2) + ' ' + theme.spacing()};
@@ -66,7 +66,7 @@ export const ButtonsContainer = styled('div')`
 
 export const FileNameContainer = styled('div')`
     display: grid;
-    grid-template-columns: 1fr 160px 80px;
+    grid-template-columns: 1fr 160px 92px 80px;
     gap: ${({ theme }) => theme.spacing()};
     margin-top: ${({ theme }) => theme.spacing()};
     align-items: center;

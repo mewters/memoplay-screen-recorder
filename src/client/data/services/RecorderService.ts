@@ -1,4 +1,7 @@
 import ysFixWebmDuration from 'fix-webm-duration';
+// @ts-ignore
+import ffmpeg from 'ffmpeg.js/ffmpeg-mp4.js';
+import { LocalStorage } from './StorageService';
 
 interface RecorderServiceInterface {
     recorder: MediaRecorder | null;
@@ -70,10 +73,38 @@ export const RecorderService: RecorderServiceInterface = {
     },
     toArrayBuffer(blob: Blob): Promise<ArrayBuffer> {
         return new Promise((resolve) => {
+            const fileType = LocalStorage.get<string>('fileType', 'webm');
             let fileReader = new FileReader();
             fileReader.onload = function () {
-                let arrayBuffer = this.result as ArrayBuffer;
-                resolve(arrayBuffer);
+                if (fileType === 'mp4') {
+                    const mp4 = ffmpeg({
+                        MEMFS: [
+                            {
+                                name: 'test.webm',
+                                data: this.result as ArrayBuffer,
+                            },
+                        ],
+                        arguments: [
+                            '-i',
+                            'test.webm',
+                            '-vcodec',
+                            'copy',
+                            '-qscale',
+                            '0',
+                            'test.mp4',
+                        ],
+                        stdin: function () {},
+                    });
+
+                    const mp4blob = new Blob([mp4.MEMFS[0].data], {
+                        type: 'video/mp4',
+                    });
+
+                    resolve(mp4blob.arrayBuffer());
+                } else {
+                    let arrayBuffer = this.result as ArrayBuffer;
+                    resolve(arrayBuffer);
+                }
             };
             fileReader.readAsArrayBuffer(blob);
         });
