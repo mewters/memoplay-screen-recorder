@@ -8,12 +8,20 @@ export const UserMediaService = {
         const sources = await desktopCapturer.getSources({
                 types: ['window', 'screen'],
             }),
-            windowSources = sources.filter((item) =>
-                item.id.includes('window')
-            ),
-            screenSources = sources.filter((item) =>
-                item.id.includes('screen')
-            );
+            windowSources = sources
+                .filter((item) => item.id.includes('window'))
+                .sort((a, b) =>
+                    a.name.trim().toLowerCase() > b.name.trim().toLowerCase()
+                        ? 1
+                        : -1
+                ),
+            screenSources = sources
+                .filter((item) => item.id.includes('screen'))
+                .sort((a, b) =>
+                    a.name.trim().toLowerCase() > b.name.trim().toLowerCase()
+                        ? 1
+                        : -1
+                );
         return {
             windowSources,
             screenSources,
