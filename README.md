@@ -21,7 +21,7 @@ A Free Simple Screen Recorder with annotation tools. Made with Electron.
 
 ## Download
 
--   [Windows](https://github.com/mewters/memoplay-screen-recorder/releases/download/v2.0.0-beta-01/MemoPlay.Setup.2.0.0.exe)
+-   [Windows](https://github.com/mewters/memoplay-screen-recorder/releases/download/v2.1.0/MemoPlay.Setup.2.1.0.exe)
 
 ---
 
