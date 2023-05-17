@@ -52,7 +52,6 @@ export default merge(baseConfig, {
             },
           },
           'css-loader',
-          'sass-loader'
         ],
       },
       // WOFF Font

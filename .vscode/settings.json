@@ -23,6 +23,6 @@
     "npm-debug.log.*": true,
     "test/**/__snapshots__": true,
     "yarn.lock": true,
-    "*.{css,sass,scss}.d.ts": true
+    "*.{css}.d.ts": true
   }
 }

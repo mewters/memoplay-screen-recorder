@@ -22,8 +22,13 @@ export default function useIndex() {
             'videoSourceId',
             '-0'
         ),
+        [cameraSourceId, setCameraSourceId] = useLocalStorage(
+            'cameraSourceId',
+            '-0'
+        ),
         [audioSource, setAudioSource] = useState<MediaStream>(),
         [videoSource, setVideoSource] = useState<MediaStream>(),
+        [cameraSource, setCameraSource] = useState<MediaStream>(),
         [audioSourceList, setAudioSourceList] = useState<
             MediaDeviceInfo[] | null
         >(null),
@@ -31,6 +36,9 @@ export default function useIndex() {
             windowSources: Electron.DesktopCapturerSource[];
             screenSources: Electron.DesktopCapturerSource[];
         } | null>(null),
+        [cameraSourceList, setCameraSourceList] = useState<
+            MediaDeviceInfo[] | null
+        >(null),
         fileTypeList = useMemo(
             () => [
                 {
@@ -56,6 +64,7 @@ export default function useIndex() {
         function updateAudioDevices() {
             UserMediaService.listAudioSources().then(setAudioSourceList);
             UserMediaService.listVideoSources().then(setVideoSourceList);
+            UserMediaService.listCameraSources().then(setCameraSourceList);
         }
 
         updateAudioDevices();
@@ -85,6 +94,10 @@ export default function useIndex() {
         selectVideoSource(videoSourceId);
     }, [videoSourceList, videoSourceId]);
 
+    useEffect(() => {
+        selectCameraSource(cameraSourceId);
+    }, [cameraSourceList, cameraSourceId]);
+
     function selectVideoSource(sourceId: string) {
         if (videoSourceList) {
             const source = [
@@ -110,6 +123,24 @@ export default function useIndex() {
                 UserMediaService.getAudioStream(source).then(setAudioSource);
             } else {
                 setAudioSourceId(audioSourceList[0].deviceId);
+            }
+        }
+    }
+
+    function selectCameraSource(sourceId: string) {
+        if (cameraSourceList && cameraSourceList.length) {
+            const source = cameraSourceList.find(
+                (source) => source.deviceId === sourceId
+            );
+
+            if (source) {
+                UserMediaService.getCameraStream(source)
+                    .then(setCameraSource)
+                    .catch((_error) => {
+                        setCameraSourceId('-0');
+                    });
+            } else {
+                setCameraSourceId('-0');
             }
         }
     }
@@ -203,13 +234,17 @@ export default function useIndex() {
         setHasTime,
         audioSourceId,
         videoSourceId,
+        cameraSourceId,
         setAudioSourceId,
         setVideoSourceId,
+        setCameraSourceId,
         audioSourceList,
         videoSourceList,
+        cameraSourceList,
         stopTimer,
         audioSource,
         videoSource,
+        cameraSource,
         totalTime,
         startTimer,
         pauseTimer,
