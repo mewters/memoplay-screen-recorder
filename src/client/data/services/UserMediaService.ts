@@ -68,4 +68,27 @@ export const UserMediaService = {
 
         return mediaStream;
     },
+
+    async listCameraSources(): Promise<MediaDeviceInfo[]> {
+        const sources = await navigator.mediaDevices.enumerateDevices(),
+            cameraSources = sources.filter(
+                (source: MediaDeviceInfo) => source.kind === 'videoinput'
+            );
+
+        return cameraSources;
+    },
+    async getCameraStream(source: MediaDeviceInfo): Promise<MediaStream> {
+        let camera: boolean | { deviceId: string } = true;
+        if (source) {
+            camera = {
+                deviceId: source.deviceId,
+            };
+        }
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: camera,
+        });
+
+        return mediaStream;
+    },
 };

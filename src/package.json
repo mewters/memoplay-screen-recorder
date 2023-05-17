@@ -1,8 +1,8 @@
 {
     "name": "memoplay-screen-recorder",
     "productName": "MemoPlay Screen Recorder",
-    "description": "A simple screen recorder",
-    "version": "2.1.0",
+    "description": "A simple screen recorder with drawing tools and webcam",
+    "version": "2.2.0",
     "main": "./main.prod.js",
     "author": {
         "name": "Akira Hanashiro",

@@ -1,12 +1,12 @@
 # MemoPlay Screen Recorder - メモプレイ
 
-A Free Simple Screen Recorder with annotation tools. Made with Electron.
+A Free Simple Screen Recorder with annotation tools and webcam. Made with Electron.
 
-<img src="./assets/prints/memoplay-screen-02.png" width="500" alt="MemoPlay Screen">
+<img src="./assets/prints/memoplay-screen-02-01.png" width="500" alt="MemoPlay Screen">
 
-<img src="./assets/prints/memoplay-screen-recording-02.png" width="500" alt="MemoPlay Screen - Recording">
+<img src="./assets/prints/memoplay-screen-recording-02-01.png" width="500" alt="MemoPlay Screen - Recording">
 
-<img src="./assets/prints/annotation-tool-02.png" width="500" alt="MemoPlay Screen - Recording">
+<img src="./assets/prints/annotation-tool-02-01.png" width="500" alt="MemoPlay Screen - Recording">
 
 ---
 
@@ -21,7 +21,7 @@ A Free Simple Screen Recorder with annotation tools. Made with Electron.
 
 ## Download
 
--   [Windows](https://github.com/mewters/memoplay-screen-recorder/releases/download/v2.1.0/MemoPlay.Setup.2.1.0.exe)
+-   [Windows](https://github.com/mewters/memoplay-screen-recorder/releases/download/v2.2.0/MemoPlay.Setup.2.2.0.exe)
 
 ---
 
@@ -40,6 +40,8 @@ A Free Simple Screen Recorder with annotation tools. Made with Electron.
 🎤 Microphone monitoring (optional)
 
 📺 Floating window for video monitoring (optional)
+
+📹 Floating window with your webcam image (optional)
 
 ---
 
@@ -62,10 +64,11 @@ A Free Simple Screen Recorder with annotation tools. Made with Electron.
 
 ### On the Screen Recorder
 
-| Function                     |                                |
-| ---------------------------- | ------------------------------ |
-| Stop Microfone Monitoring    | Click on the Microfone Monitor |
-| Toggle floating video window | Click on the Video Monitor     |
+| Function                      |                                |
+| ----------------------------- | ------------------------------ |
+| Stop Microfone Monitoring     | Click on the Microfone Monitor |
+| Toggle floating video window  | Click on the Video Monitor     |
+| Toggle floating webcam window | Click on the WebCam Monitor    |
 
 ### On the Annotation Tool
 

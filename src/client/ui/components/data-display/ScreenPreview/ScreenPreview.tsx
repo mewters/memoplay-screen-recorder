@@ -15,6 +15,12 @@ const ScreenPreview = (props: ScreenPreviewProps) => {
             videoRef.current.onenterpictureinpicture = () => setPip(true);
             videoRef.current.onleavepictureinpicture = () => setPip(false);
         }
+
+        return () => {
+            if (!videoRef.current && document.pictureInPictureElement) {
+                document.exitPictureInPicture();
+            }
+        };
     }, [props.videoSource]);
 
     async function startPIP() {

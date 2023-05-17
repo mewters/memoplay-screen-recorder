@@ -76,7 +76,7 @@ const createWindow = async () => {
         title: 'MemoPlay Screen Recorder',
         show: false,
         width: 600,
-        height: 240,
+        height: 325,
         resizable: !app.isPackaged,
         icon: getAssetPath('icon.png'),
         webPreferences: {

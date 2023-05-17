@@ -50,12 +50,16 @@ export default function Index() {
         setHasTime,
         audioSourceId,
         videoSourceId,
+        cameraSourceId,
         setAudioSourceId,
         setVideoSourceId,
+        setCameraSourceId,
         audioSourceList,
         videoSourceList,
+        cameraSourceList,
         audioSource,
         videoSource,
+        cameraSource,
         totalTime,
         startSelectFolder,
         startRecording,
@@ -72,6 +76,10 @@ export default function Index() {
                     <ScreenPreview videoSource={videoSource} />
 
                     <AudioWaves audioSource={audioSource} />
+
+                    {cameraSourceId !== '-0' && (
+                        <ScreenPreview videoSource={cameraSource} />
+                    )}
                 </PreviewsContainer>
 
                 <SourceSelectorContainer isRecording={isRecording}>
@@ -124,6 +132,29 @@ export default function Index() {
                             ))}
                         </Select>
                     )}
+
+                    <Select
+                        native
+                        label={
+                            cameraSourceList?.length
+                                ? 'Camera input source'
+                                : 'No camera input sources'
+                        }
+                        value={cameraSourceId}
+                        onChange={(event) =>
+                            setCameraSourceId(event.target.value as string)
+                        }
+                    >
+                        <option value={'-0'}>No Camera</option>
+                        {cameraSourceList?.map((source) => (
+                            <option
+                                value={source.deviceId}
+                                key={source.deviceId}
+                            >
+                                {source.label}
+                            </option>
+                        ))}
+                    </Select>
                 </SourceSelectorContainer>
 
                 <ControlsContainer isRecording={isRecording}>
